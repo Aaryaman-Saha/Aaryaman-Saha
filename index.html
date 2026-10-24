@@ -1,0 +1,2160 @@
+<title>Aaryaman Saha</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;800&family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap">
+<style>
+  /* Layout: full-bleed looping video, two stacked links dead-centre, corner links; resume opens as a black full-screen view. Single dark look by choice. */
+  :root {
+    --ink: #f5f3ef;
+    --ink-dim: rgba(245, 243, 239, 0.55);
+    --scrim: rgba(12, 14, 20, 0.38);
+    --ground: #0c0e14;
+    --black: #000000;
+    --font: "Manrope", "Helvetica Neue", Arial, sans-serif;
+    --edge: max(20px, 2.4vw);
+    color-scheme: dark;
+  }
+  html, body { height: 100%; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    overflow: hidden;
+    font-family: var(--font);
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; border-radius: 2px; }
+
+  /* ---------- Landing ---------- */
+  .bg {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%; max-width: 100%;
+    object-fit: cover; z-index: 0;
+  }
+  .scrim { position: fixed; inset: 0; background: var(--scrim); z-index: 1; }
+
+  .center {
+    position: fixed; inset: 0; z-index: 2;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: clamp(0.6rem, 2vh, 1.4rem);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    text-align: center;
+    pointer-events: none;
+  }
+  .center a {
+    pointer-events: auto;
+    font-weight: 800;
+    font-size: clamp(1.2rem, 3.5vw, 2.8rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-decoration: none;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.35);
+    transition: color 0.25s ease, letter-spacing 0.35s ease;
+    padding-block: 0.1em;
+  }
+  .center:hover a { color: var(--ink-dim); }
+  .center a:hover, .center a:focus-visible { color: var(--ink); letter-spacing: -0.01em; }
+  .center a[href="#about-another-me"]:hover,
+  .center a[href="#about-another-me"]:focus-visible { color: #e8a96a; }
+
+  .corner {
+    position: fixed; z-index: 3;
+    top: calc(var(--edge) + env(safe-area-inset-top, 0px));
+    display: flex; align-items: center;
+    height: 40px;
+  }
+  .corner.left { left: calc(var(--edge) + env(safe-area-inset-left, 0px)); }
+  .corner.right { right: calc(var(--edge) + env(safe-area-inset-right, 0px)); }
+
+  .text-link {
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+    padding-block: 6px;
+    border-bottom: 1.5px solid transparent;
+    transition: border-color 0.2s ease;
+    text-shadow: 0 1px 12px rgba(0, 0, 0, 0.4);
+  }
+  .text-link:hover { border-bottom-color: currentColor; }
+
+  .linkedin {
+    display: inline-grid; place-items: center;
+    width: 36px; height: 36px;
+    border-radius: 7px;
+    background: var(--ink);
+    color: var(--black);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: 21px;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    text-decoration: none;
+    padding-bottom: 2px;
+    box-shadow: 0 2px 14px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  .linkedin:hover { transform: translateY(-2px); }
+
+  /* ---------- About me — slide-up panel ---------- */
+  .aboutme-panel {
+    position: fixed; inset: 0; z-index: 7;
+    --am-bg: #0d1117;
+    --am-accent: #c8894a;
+    --am-accent2: #e8a96a;
+    --am-text: #f0ead8;
+    --am-dim: rgba(240, 234, 216, 0.5);
+    --am-rule: rgba(240, 234, 216, 0.1);
+    background: var(--am-bg);
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    transform: translateY(100%);
+    transition: transform 0.72s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .aboutme-panel.open { transform: translateY(0); }
+
+  /* --- hero summary --- */
+  .am-hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: calc(80px + env(safe-area-inset-top, 0px)) max(40px, 8vw) 80px;
+    text-align: center;
+    position: relative;
+  }
+  .am-hero::after {
+    content: "";
+    position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px;
+    background: var(--am-rule);
+  }
+  .am-eyebrow {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.2em;
+    color: var(--am-accent); text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
+  }
+  .am-headline {
+    font-size: clamp(2rem, 5.5vw, 4.4rem);
+    font-weight: 800; line-height: 1.08; letter-spacing: -0.03em;
+    color: var(--am-text);
+    max-width: 18ch;
+    margin: 0 auto 2rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.6s ease 0.35s, transform 0.6s ease 0.35s;
+  }
+  .am-headline em { font-style: normal; color: var(--am-accent2); }
+  .am-subline {
+    font-size: clamp(1rem, 1.8vw, 1.25rem); font-weight: 500; line-height: 1.6;
+    color: var(--am-dim); max-width: 52ch;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.6s ease 0.5s, transform 0.6s ease 0.5s;
+  }
+  .am-scroll-hint {
+    margin-top: 3.5rem; font-size: 0.8rem; letter-spacing: 0.12em;
+    color: var(--am-dim); text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.6s ease 0.75s;
+  }
+  .am-scroll-hint::after { content: " ↓"; }
+  .aboutme-panel.open .am-eyebrow,
+  .aboutme-panel.open .am-headline,
+  .aboutme-panel.open .am-subline,
+  .aboutme-panel.open .am-scroll-hint { opacity: 1; transform: translateY(0); }
+
+  /* --- expertise --- */
+  .am-expertise {
+    padding: 100px max(40px, 8vw);
+    position: relative;
+  }
+  .am-expertise::after {
+    content: "";
+    position: absolute; bottom: 0; left: 10%; right: 10%; height: 1px;
+    background: var(--am-rule);
+  }
+  .am-section-label {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.2em;
+    color: var(--am-accent); text-transform: uppercase; margin-bottom: 3rem;
+  }
+  .am-skills-list {
+    list-style: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .am-skills-list li {
+    font-size: clamp(1.5rem, 4vw, 3.2rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    color: var(--am-text);
+    padding: 0.55em 0;
+    border-bottom: 1px solid var(--am-rule);
+    opacity: 0; transform: translateX(-30px);
+    transition: opacity 0.5s ease, transform 0.5s ease, color 0.2s ease;
+    cursor: default;
+  }
+  .am-skills-list li:hover { color: var(--am-accent2); }
+  .am-skills-list li.revealed { opacity: 1; transform: translateX(0); }
+
+  /* --- projects --- */
+  .am-projects {
+    padding: 100px max(40px, 8vw) calc(120px + env(safe-area-inset-bottom, 0px));
+  }
+  .am-projects-title {
+    font-size: clamp(1.8rem, 4.5vw, 3.8rem);
+    font-weight: 800; letter-spacing: -0.03em;
+    color: var(--am-text); margin-bottom: 4rem; line-height: 1.1;
+    white-space: nowrap;
+  }
+  .am-project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
+    gap: 48px 40px;
+  }
+  .am-project {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .am-project.revealed { opacity: 1; transform: translateY(0); }
+  .am-project-img-wrap {
+    width: 100%; aspect-ratio: 16/10; overflow: hidden;
+    background: #1a1a1a;
+  }
+  .am-project-img-wrap img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.6s ease;
+  }
+  .am-project:hover .am-project-img-wrap img { transform: scale(1.04); }
+  .am-project-caption {
+    padding-top: 1.1rem;
+    display: flex; flex-direction: column; gap: 0.3rem;
+  }
+  .am-project-name {
+    font-size: 1.05rem; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--am-text); line-height: 1.2;
+  }
+  .am-project-meta {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--am-dim); line-height: 1.5;
+  }
+  .am-project-meta span { color: var(--am-accent2); }
+
+  /* ---------- Software & Tools ---------- */
+  .am-tools {
+    padding: 80px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .am-tools::before {
+    content: "";
+    position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+    background: var(--am-rule);
+  }
+  .am-tools-label {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.2em;
+    color: var(--am-accent); text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    padding-left: max(40px, 8vw);
+  }
+  /* fade edges */
+  .am-tools-track-wrap {
+    position: relative;
+  }
+  .am-tools-track-wrap::before,
+  .am-tools-track-wrap::after {
+    content: ""; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none;
+  }
+  .am-tools-track-wrap::before { left: 0; background: linear-gradient(to right, var(--am-bg), transparent); }
+  .am-tools-track-wrap::after  { right: 0; background: linear-gradient(to left,  var(--am-bg), transparent); }
+  .am-tools-track {
+    display: flex; gap: 48px; align-items: center;
+    width: max-content;
+    animation: toolsScroll 28s linear infinite;
+  }
+  .am-tools-track:hover { animation-play-state: paused; }
+  @keyframes toolsScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .am-tool-item {
+    display: flex; align-items: center; gap: 10px;
+    flex: none;
+    opacity: 0.6; transition: opacity 0.2s ease;
+  }
+  .am-tool-item:hover { opacity: 1; }
+  .am-tool-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 18px;
+    border: 1.5px solid rgba(200,137,74,0.35);
+    border-radius: 100px;
+    background: rgba(200,137,74,0.06);
+    transition: border-color 0.2s ease, background 0.2s ease;
+    white-space: nowrap;
+  }
+  .am-tool-item:hover .am-tool-pill {
+    border-color: rgba(200,137,74,0.7);
+    background: rgba(200,137,74,0.12);
+  }
+  .am-tool-name {
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.04em;
+    color: #c8c2b8; white-space: nowrap;
+  }
+  .am-tool-item:hover .am-tool-name { color: #f5f3ef; }
+
+  /* ---------- References ---------- */
+  .am-refs {
+    padding: 80px max(40px, 8vw);
+    position: relative;
+  }
+  .am-refs::before {
+    content: "";
+    position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+    background: var(--am-rule);
+  }
+  .am-refs-label {
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.2em;
+    color: var(--am-accent); text-transform: uppercase;
+    margin-bottom: 2.5rem;
+  }
+  .ref-item {
+    border-bottom: 1px solid var(--am-rule);
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .ref-item.revealed { opacity: 1; transform: translateY(0); }
+  .ref-toggle {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1.5rem 0;
+    text-align: left; color: var(--am-text); font-family: var(--font);
+  }
+  .ref-toggle:hover .ref-name { color: var(--am-accent2); }
+  .ref-name {
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    transition: color 0.2s ease;
+  }
+  .ref-role {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--am-dim); margin-top: 0.25rem;
+  }
+  .ref-chevron {
+    flex: none; width: 28px; height: 28px;
+    border: 1.5px solid var(--am-rule); border-radius: 50%;
+    display: grid; place-items: center;
+    transition: transform 0.35s ease, border-color 0.2s ease;
+    color: var(--am-accent);
+  }
+  .ref-toggle[aria-expanded="true"] .ref-chevron { transform: rotate(180deg); border-color: var(--am-accent); }
+  .ref-chevron svg { width: 14px; height: 14px; }
+  .ref-body {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .ref-body.open { grid-template-rows: 1fr; }
+  .ref-inner { overflow: hidden; }
+  .ref-content {
+    font-size: 0.95rem; font-weight: 500; line-height: 1.8;
+    color: var(--am-dim); padding-bottom: 2rem;
+    max-width: 72ch;
+  }
+  .ref-content a {
+    color: var(--am-accent);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(200,137,74,0.35);
+    transition: border-color 0.2s ease;
+  }
+  .ref-content a:hover { border-color: var(--am-accent); }
+
+  /* ---------- Academic Projects ---------- */
+  .am-academic {
+    padding: 100px max(40px, 8vw) calc(120px + env(safe-area-inset-bottom, 0px));
+    position: relative;
+  }
+  .am-academic::before {
+    content: "";
+    position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+    background: var(--am-rule);
+  }
+  .am-academic-title {
+    font-size: clamp(1.8rem, 4.5vw, 3.8rem);
+    font-weight: 800; letter-spacing: -0.03em;
+    color: var(--am-text); margin-bottom: 3rem; line-height: 1.1;
+  }
+  .ac-item {
+    border-bottom: 1px solid var(--am-rule);
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .ac-item.revealed { opacity: 1; transform: translateY(0); }
+  .ac-toggle {
+    width: 100%; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 1.5rem 0;
+    text-align: left; color: var(--am-text); font-family: var(--font);
+  }
+  .ac-toggle:hover .ac-name { color: var(--am-accent2); }
+  .ac-name {
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-weight: 800; letter-spacing: -0.02em;
+    transition: color 0.2s ease;
+  }
+  .ac-chevron {
+    flex: none; width: 28px; height: 28px;
+    border: 1.5px solid var(--am-rule); border-radius: 50%;
+    display: grid; place-items: center;
+    transition: transform 0.35s ease, border-color 0.2s ease;
+    color: var(--am-accent);
+  }
+  .ac-toggle[aria-expanded="true"] .ac-chevron { transform: rotate(180deg); border-color: var(--am-accent); }
+  .ac-chevron svg { width: 14px; height: 14px; }
+  .ac-body {
+    display: grid; grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .ac-body.open { grid-template-rows: 1fr; }
+  .ac-inner { overflow: hidden; }
+  .ac-infographic {
+    padding: 1.5rem 0 0.5rem;
+    display: flex; justify-content: center;
+  }
+  .ac-infographic svg { max-width: 100%; }
+  .ac-desc {
+    font-size: 1rem; font-weight: 500; line-height: 1.75;
+    color: var(--am-dim); padding-bottom: 2rem;
+    max-width: 72ch;
+  }
+
+  .am-close {
+    position: fixed;
+    bottom: calc(var(--edge) + env(safe-area-inset-bottom, 0px));
+    right: calc(var(--edge) + env(safe-area-inset-right, 0px));
+    z-index: 99;
+    font-weight: 600; font-size: 0.95rem; letter-spacing: 0.01em;
+    color: var(--am-dim); text-decoration: none;
+    padding: 10px 18px;
+    border: 1px solid var(--am-rule);
+    border-radius: 999px;
+    background: rgba(13, 17, 23, 0.85);
+    backdrop-filter: blur(8px);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s ease 0.6s, color 0.2s ease, border-color 0.2s ease;
+  }
+  .am-close.visible { opacity: 1; pointer-events: auto; }
+  .am-close:hover { color: var(--am-text); border-color: var(--am-accent); }
+
+  /* ---------- About another me — slide-up panel ---------- */
+  .about-panel {
+    position: fixed; inset: 0; z-index: 8;
+    /* warm dusk palette drawn from the golden-hour cityscape in the video */
+    --panel-bg: #1a1410;
+    --panel-mid: #2c1f14;
+    --amber: #c8894a;
+    --amber-bright: #e8a96a;
+    --text-primary: #f0ead8;
+    --text-secondary: rgba(240, 234, 216, 0.55);
+    background: #0e0c0a;
+    display: block;
+    transform: translateY(100%);
+    transition: transform 0.72s cubic-bezier(0.76, 0, 0.24, 1);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .about-panel.open { transform: translateY(0); }
+
+  /* Map screen — first snap point */
+  .about-map-screen {
+    position: relative;
+    width: 100%; height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    scroll-snap-align: start;
+    background: #000;
+    overflow: hidden;
+  }
+
+  /* Films screen — third snap point */
+  .about-films-screen {
+    flex: none;
+    width: 100%;
+    min-height: 100vh;
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px var(--edge) 40px;
+    box-sizing: border-box;
+    overflow: hidden;
+    scroll-snap-align: start;
+  }
+  .about-films-sub {
+    font-family: var(--font);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: rgba(245,243,239,0.45);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: -12px 0 36px;
+  }
+  .films-track-wrap {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+  }
+  .films-track {
+    display: flex;
+    gap: 20px;
+    width: max-content;
+    animation: filmsScroll 40s linear infinite;
+  }
+  .films-track:hover { animation-play-state: paused; }
+  @keyframes filmsScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .film-card {
+    flex: none;
+    width: 200px;
+    cursor: default;
+    transition: transform 0.25s ease;
+  }
+  .film-card:hover { transform: translateY(-6px) scale(1.03); }
+  .film-poster {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+  }
+  .film-poster img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* ── Sports screen ── */
+  .about-sports-screen {
+    flex: none; width: 100%; min-height: 100vh;
+    background: #0a0a0a;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 60px var(--edge) 50px; box-sizing: border-box;
+    scroll-snap-align: start;
+  }
+  .sports-sub {
+    font-family: var(--font); font-size: 0.85rem; font-weight: 500;
+    color: rgba(245,243,239,0.4); letter-spacing: 0.12em;
+    text-transform: uppercase; margin: -12px 0 48px;
+  }
+  .sports-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    width: 100%; max-width: 680px;
+  }
+  .sport-card {
+    display: flex; flex-direction: column; align-items: center;
+    background: transparent;
+    cursor: default;
+    transition: opacity 0.3s ease;
+  }
+  .sport-card:hover { opacity: 0.7; }
+  .sport-card-court {
+    width: 100%; aspect-ratio: 4/3; position: relative;
+    border-radius: 12px; overflow: hidden;
+  }
+  .sport-card-court svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .sport-label {
+    margin-top: 10px;
+    text-align: center;
+    font-family: var(--font); font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
+
+  /* ── Music screen ── */
+  .about-music-screen {
+    flex: none; width: 100%; min-height: 100vh;
+    background: #080808;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 60px var(--edge) 50px; box-sizing: border-box;
+    scroll-snap-align: start;
+    position: relative; overflow: hidden;
+  }
+  .music-sub {
+    font-family: var(--font); font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.25);
+    margin: 0 0 48px;
+  }
+  .music-stage {
+    position: relative;
+    width: min(640px, 95vw); height: min(640px, 95vw);
+    flex: none;
+  }
+  .music-logo-wrap {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 72px; height: 72px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .music-logo-wrap svg {
+    width: 64px; height: 64px;
+    opacity: 0.55;
+  }
+  .music-ring {
+    position: absolute; inset: 0; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .music-ring-2 {
+    position: absolute;
+    top: 15%; left: 15%; right: 15%; bottom: 15%;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+  .artist-name {
+    position: absolute;
+    top: 0; left: 0;
+    font-family: var(--font);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+    will-change: transform;
+    transition: color 0.3s ease;
+    cursor: default;
+    user-select: none;
+  }
+  .artist-name:hover { color: rgba(255,255,255,0.95); }
+
+  /* Media tiles screen — second snap point */
+  .about-tiles-screen {
+    flex: none;
+    width: 100%;
+    min-height: 100vh;
+    background: #fff;
+    scroll-snap-align: start;
+    padding: 60px 40px 80px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .about-tiles-heading {
+    font-family: Manrope, sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #999;
+    margin: 0 0 32px;
+    align-self: flex-start;
+  }
+  .about-tiles-grid {
+    width: 100%;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: auto;
+    gap: 4px;
+  }
+  .tile { border-radius: 6px; overflow: hidden; position: relative; }
+  .tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  /* Each tile has an explicit aspect-ratio matching the photo's natural orientation */
+  .t-3-port  { grid-column: span 3;  aspect-ratio: 3/5; }   /* portrait ~9:16 in 3 cols */
+  .t-3-sq    { grid-column: span 3;  aspect-ratio: 3/4; }   /* portrait-ish 3:4 */
+  .t-3-land  { grid-column: span 3;  aspect-ratio: 4/3; }   /* landscape in 3 cols */
+  .t-4-land  { grid-column: span 4;  aspect-ratio: 4/3; }   /* landscape 4:3 in 4 cols */
+  .t-4-wide  { grid-column: span 4;  aspect-ratio: 16/9; }  /* wide landscape in 4 cols */
+  .t-5-land  { grid-column: span 5;  aspect-ratio: 5/3; }   /* landscape in 5 cols */
+  .t-6-land  { grid-column: span 6;  aspect-ratio: 3/2; }   /* landscape in 6 cols */
+  .t-7-land  { grid-column: span 7;  aspect-ratio: 7/4; }   /* landscape in 7 cols */
+  .t-8-wide  { grid-column: span 8;  aspect-ratio: 16/9; }  /* ultra-wide in 8 cols */
+  .t-5-port  { grid-column: span 5;  aspect-ratio: 5/8; }   /* portrait in 5 cols */
+  .t-12-wide { grid-column: span 12; aspect-ratio: 16/7; }  /* full-width panoramic */
+
+  .tile-placeholder {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px;
+    color: #bbb;
+    font-family: Manrope, sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tile-placeholder svg { opacity: 0.35; }
+  .tile-media { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tile-video-ph { background: #e8e5e0; }
+  .tile-img-ph   { background: #ede9e3; }
+
+  /* ambient grain texture on map screen */
+  .about-map-screen::before {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none; z-index: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.6;
+  }
+  /* bottom fade — map dissolves into black, covers Antarctica */
+  .about-map-screen::after {
+    content: "";
+    position: absolute; bottom: 0; left: 0; right: 0; height: 50%;
+    background: linear-gradient(to top, #000 40%, transparent 100%);
+    pointer-events: none; z-index: 2;
+  }
+
+  /* World map */
+  .about-map-wrap {
+    position: absolute; inset: 0; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .about-map-svg {
+    width: 100%; height: 100%;
+    max-width: 1200px;
+    object-fit: contain;
+  }
+  .map-land path { opacity: 0.55; }
+
+  /* Journey arcs — drawn progressively via JS */
+  .arc { fill: none; stroke-linecap: round; }
+  .arc-trail { stroke: #c8894a; stroke-width: 1.5; opacity: 0.5; }
+  .arc-trail.arc-long { stroke: #e8a96a; stroke-width: 2; opacity: 0.6; }
+
+  /* Location dots */
+  .dot { opacity: 0; transition: opacity 0.3s ease; }
+  .dot.visible { opacity: 1; }
+
+  /* Travelling dot glow */
+  .travel-dot-glow { fill: #e8a96a; opacity: 0.3; }
+  .travel-dot-core { fill: #fff; }
+
+  /* Labels */
+  .label { opacity: 0; transition: opacity 0.6s ease; }
+  .label.visible { opacity: 0.9; }
+
+  /* Pulse ring for last stop */
+  @keyframes pulse-ring {
+    0%   { r: 5; opacity: 0.6; }
+    100% { r: 14; opacity: 0; }
+  }
+  .pulse-ring { animation: pulse-ring 1.8s ease-out infinite; fill: none; stroke: #e8a96a; stroke-width: 1.5; opacity: 0; }
+  .pulse-ring.active { opacity: 1; }
+
+  /* Career layer fade-out */
+  .career-layer { transition: opacity 1s ease; }
+  .career-layer.hidden { opacity: 0; pointer-events: none; }
+
+  /* Travel pins */
+  .travel-pin { opacity: 0; transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1); transform-origin: center bottom; transform: scale(0) translateY(4px); }
+  .travel-pin.visible { opacity: 1; transform: scale(1) translateY(0); }
+  .travel-pin-stem { stroke: #e8a96a; stroke-width: 1.5; }
+  .travel-pin-head { fill: #e8a96a; }
+  .travel-pin-shadow { fill: rgba(0,0,0,0.2); }
+
+  /* "Places I have Travelled to" label */
+  .travel-phase-label { opacity: 0; transition: opacity 1s ease; }
+  .travel-phase-label.visible { opacity: 1; }
+
+  @keyframes mapBob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(7px); }
+  }
+  .map-scroll-hint {
+    position: absolute;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    animation: mapBob 1.8s ease-in-out infinite;
+    z-index: 3;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .map-scroll-hint svg {
+    width: 22px; height: 22px;
+    stroke: #fff;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .about-close {
+    position: absolute;
+    bottom: calc(var(--edge) + env(safe-area-inset-bottom, 0px));
+    left: 50%; transform: translateX(-50%);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.01em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding-block: 6px;
+    border-bottom: 1.5px solid transparent;
+    opacity: 0;
+    transition: opacity 0.4s ease 0.8s, color 0.2s ease, border-color 0.2s ease;
+    z-index: 2;
+  }
+  .about-panel.open .about-close { opacity: 1; }
+  .about-close:hover { color: var(--text-primary); border-bottom-color: var(--amber); }
+
+  .about-tiles-close {
+    display: inline-block;
+    margin-top: 40px;
+    font-family: Manrope, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #999;
+    text-decoration: none;
+    letter-spacing: 0.04em;
+    border-bottom: 1.5px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .about-tiles-close:hover { color: #333; border-bottom-color: #333; }
+
+  /* ---------- Resume view ---------- */
+  .resume {
+    position: fixed; inset: 0; z-index: 10;
+    background: var(--black);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .resume-bar {
+    position: sticky; top: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding-top: calc(var(--edge) + env(safe-area-inset-top, 0px));
+    padding-bottom: 16px;
+    padding-left: calc(var(--edge) + env(safe-area-inset-left, 0px));
+    padding-right: calc(var(--edge) + env(safe-area-inset-right, 0px));
+    background: linear-gradient(var(--black) 70%, rgba(0, 0, 0, 0));
+  }
+  .btn-download {
+    display: inline-flex; align-items: center; gap: 10px;
+    font: 600 0.9rem/1 var(--font);
+    letter-spacing: 0.01em;
+    color: var(--black);
+    background: var(--ink);
+    border: 0;
+    border-radius: 999px;
+    padding: 12px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+  .btn-download:hover { opacity: 0.85; }
+  .btn-download[aria-busy="true"] { opacity: 0.6; cursor: progress; }
+  .btn-download svg { width: 16px; height: 16px; flex: none; }
+  .status {
+    min-height: 1.2em;
+    text-align: right;
+    font-size: 0.8rem;
+    color: var(--ink-dim);
+    padding-right: calc(var(--edge) + env(safe-area-inset-right, 0px));
+    margin-top: -8px;
+  }
+  .sheet {
+    display: flex; justify-content: center;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 12px 64px;
+  }
+  .sheet img {
+    width: min(880px, 100%);
+    max-width: 100%;
+    height: auto;
+    display: block;
+    background: #fff;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 30px 80px rgba(0, 0, 0, 0.6);
+  }
+
+  .email-link {
+    position: fixed;
+    bottom: calc(var(--edge) + env(safe-area-inset-bottom, 0px));
+    left: 50%; transform: translateX(-50%);
+    z-index: 3;
+    font-weight: 500;
+    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-dim);
+    text-decoration: none;
+    padding-block: 6px;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    white-space: nowrap;
+    text-shadow: 0 1px 12px rgba(0,0,0,0.5);
+  }
+  .email-link:hover { color: var(--ink); border-bottom-color: var(--ink); }
+
+  @media (max-width: 480px) {
+    .text-link { font-size: 0.8rem; }
+    .btn-download { padding: 10px 14px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+    .center a:hover, .center a:focus-visible { letter-spacing: -0.03em; }
+  }
+</style>
+
+<video class="bg" src="hero.mp4" autoplay muted loop playsinline preload="auto" aria-hidden="true"></video>
+<div class="scrim"></div>
+
+<div class="corner left">
+  <a class="text-link" href="#resume" id="open-resume">Resume</a>
+</div>
+<div class="corner right">
+  <a class="linkedin" href="https://www.linkedin.com/in/aaryamansaha" target="_blank" rel="noopener" aria-label="Aaryaman Saha on LinkedIn" title="LinkedIn">in</a>
+</div>
+
+<a class="email-link" href="mailto:as20989@nyu.edu">as20989@nyu.edu</a>
+
+<nav class="center" aria-label="Main">
+  <a href="#about-me">About me</a>
+  <a href="#about-another-me" style="color: #c8894a;">About me, but a little personal</a>
+</nav>
+
+<!-- About me panel -->
+<section class="aboutme-panel" id="aboutme-panel" aria-label="About me">
+  <div class="am-hero">
+    <p class="am-eyebrow">Aaryaman Saha</p>
+    <h2 class="am-headline">The built environment <em>is personal to me</em></h2>
+    <p class="am-subline">I believe the spaces we build shape how people live, move, and connect — and that belief drives everything I do. As a construction management graduate student, I'm drawn to projects that leave something meaningful behind: infrastructure that serves communities, buildings that age with dignity, and spaces that people are proud to inhabit.<br><br>I'm equally fascinated by the systems behind the build — how smarter tools and fresh thinking can turn a good process into a great one. I'm always curious, always asking: <em>how do we do this better?</em></p>
+    <p class="am-scroll-hint">Scroll to explore</p>
+  </div>
+
+  <div class="am-expertise">
+    <p class="am-section-label">Area of expertise</p>
+    <ul class="am-skills-list" id="skills-list">
+      <li>Project Management</li>
+      <li>Scheduling</li>
+      <li>Cost Estimation</li>
+      <li>Bid Solicitation and Levelling</li>
+      <li>Contracts</li>
+      <li>Risk Analysis</li>
+      <li>Building Information Modeling</li>
+      <li>Construction Accounting &amp; Finance</li>
+    </ul>
+  </div>
+
+  <div class="am-projects">
+    <h3 class="am-projects-title">Projects I was involved in</h3>
+    <div class="am-project-grid" id="project-grid">
+
+      <div class="am-project">
+        <div class="am-project-img-wrap">
+          <img src="proj-transit-lounge-opt.jpg" alt="Luxury residential home under construction in Fort Lauderdale, FL" loading="lazy">
+        </div>
+        <div class="am-project-caption">
+          <p class="am-project-name">Residential Home · Fort Lauderdale, FL</p>
+          <p class="am-project-meta">Double P Construction &nbsp;·&nbsp; <span>Project Management</span></p>
+        </div>
+      </div>
+
+      <div class="am-project">
+        <div class="am-project-img-wrap">
+          <img src="proj-doubleep-2.jpg" alt="Residential home under construction in Fort Lauderdale, FL" loading="lazy">
+        </div>
+        <div class="am-project-caption">
+          <p class="am-project-name">Residential Home · Fort Lauderdale, FL</p>
+          <p class="am-project-meta">Double P Construction &nbsp;·&nbsp; <span>Project Management</span></p>
+        </div>
+      </div>
+
+      <div class="am-project">
+        <div class="am-project-img-wrap" style="aspect-ratio: unset; height: auto;">
+          <img src="proj-ft-lauderdale.jpg" alt="CIAL Kochi International Airport aerial render" loading="lazy" style="height: auto; object-fit: contain;">
+        </div>
+        <div class="am-project-caption">
+          <p class="am-project-name">CIAL Kochi International Airport · Kochi, India</p>
+          <p class="am-project-meta">Kembhavi Architecture Foundation &nbsp;·&nbsp; <span>Design Development</span></p>
+        </div>
+      </div>
+
+      <div class="am-project">
+        <div class="am-project-img-wrap">
+          <img src="proj-botanico.jpg" alt="Provident Botanico residential towers, Bangalore" loading="lazy">
+        </div>
+        <div class="am-project-caption">
+          <p class="am-project-name">Provident Botanico · Bangalore, India</p>
+          <p class="am-project-meta">Kembhavi Architecture Foundation &nbsp;·&nbsp; <span>Design Development</span></p>
+        </div>
+      </div>
+
+      <div class="am-project">
+        <div class="am-project-img-wrap">
+          <img src="proj-cial-transit.webp" alt="CIAL Transit Lounge interior, Kochi" loading="lazy">
+        </div>
+        <div class="am-project-caption">
+          <p class="am-project-name">CIAL Transit Lounge · Kochi, India</p>
+          <p class="am-project-meta">Kembhavi Architecture Foundation &nbsp;·&nbsp; <span>Design Development</span> &nbsp;·&nbsp; <span>Site Coordination</span></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Academic Projects -->
+  <div class="am-academic">
+    <h3 class="am-academic-title">Academic Projects</h3>
+
+    <!-- CPM Scheduling -->
+    <div class="ac-item" id="ac-1">
+      <button class="ac-toggle" aria-expanded="false" aria-controls="ac-body-1">
+        <span class="ac-name">CPM Scheduling</span>
+        <span class="ac-chevron" aria-hidden="true">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 7,10 12,4"/></svg>
+        </span>
+      </button>
+      <div class="ac-body" id="ac-body-1" role="region">
+        <div class="ac-inner">
+          <div class="ac-infographic" id="ac-infographic-1">
+            <!-- Gantt / timeline infographic -->
+            <svg width="560" height="180" viewBox="0 0 560 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="CPM schedule diagram">
+              <defs>
+                <linearGradient id="bar1" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8894a"/><stop offset="100%" stop-color="#e8a96a"/></linearGradient>
+                <linearGradient id="bar2" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8894a"/><stop offset="100%" stop-color="#e8a96a"/></linearGradient>
+              </defs>
+              <!-- axis -->
+              <line x1="110" y1="20" x2="110" y2="160" stroke="#2a2a2a" stroke-width="1"/>
+              <line x1="110" y1="160" x2="545" y2="160" stroke="#2a2a2a" stroke-width="1"/>
+              <!-- week ticks -->
+              <text x="110" y="174" font-size="9" fill="#555" text-anchor="middle" font-family="Manrope,sans-serif">W1</text>
+              <text x="194" y="174" font-size="9" fill="#555" text-anchor="middle" font-family="Manrope,sans-serif">W2</text>
+              <text x="278" y="174" font-size="9" fill="#555" text-anchor="middle" font-family="Manrope,sans-serif">W3</text>
+              <text x="362" y="174" font-size="9" fill="#555" text-anchor="middle" font-family="Manrope,sans-serif">W4</text>
+              <text x="446" y="174" font-size="9" fill="#555" text-anchor="middle" font-family="Manrope,sans-serif">W5</text>
+              <text x="530" y="174" font-size="9" fill="#555" text-anchor="middle" font-family="Manrope,sans-serif">W6</text>
+              <!-- row labels -->
+              <text x="100" y="47" font-size="10" fill="#888" text-anchor="end" font-family="Manrope,sans-serif">Design</text>
+              <text x="100" y="82" font-size="10" fill="#888" text-anchor="end" font-family="Manrope,sans-serif">Foundation</text>
+              <text x="100" y="117" font-size="10" fill="#888" text-anchor="end" font-family="Manrope,sans-serif">Structure</text>
+              <text x="100" y="152" font-size="10" fill="#888" text-anchor="end" font-family="Manrope,sans-serif">MEP</text>
+              <!-- bars — animated via CSS -->
+              <rect class="ac-bar" x="111" y="32" width="0" height="20" rx="3" fill="url(#bar1)" data-w="168" data-delay="0"/>
+              <rect class="ac-bar" x="111" y="67" width="0" height="20" rx="3" fill="url(#bar1)" data-w="84"  data-delay="150"/>
+              <rect class="ac-bar" x="195" y="102" width="0" height="20" rx="3" fill="url(#bar1)" data-w="168" data-delay="300"/>
+              <rect class="ac-bar" x="279" y="137" width="0" height="20" rx="3" fill="url(#bar1)" data-w="168" data-delay="450"/>
+              <!-- critical path arrow -->
+              <path class="ac-crit" d="M285 42 L285 77" stroke="#e8a96a" stroke-width="1.5" stroke-dasharray="3 3" opacity="0"/>
+              <path class="ac-crit" d="M285 112 L285 147" stroke="#e8a96a" stroke-width="1.5" stroke-dasharray="3 3" opacity="0"/>
+            </svg>
+          </div>
+          <p class="ac-desc">Developed a cost- and resource-loaded project schedule using Primavera P6 for a warehouse in Texas. Applied the Critical Path Method to sequence activities, assign resources, and identify schedule-critical tasks — producing a construction baseline ready for progress tracking.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cost Estimation -->
+    <div class="ac-item" id="ac-2">
+      <button class="ac-toggle" aria-expanded="false" aria-controls="ac-body-2">
+        <span class="ac-name">Cost Estimation</span>
+        <span class="ac-chevron" aria-hidden="true">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 7,10 12,4"/></svg>
+        </span>
+      </button>
+      <div class="ac-body" id="ac-body-2" role="region">
+        <div class="ac-inner">
+          <div class="ac-infographic" id="ac-infographic-2">
+            <!-- Cost breakdown bar chart -->
+            <svg width="560" height="180" viewBox="0 0 560 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Cost estimate breakdown">
+              <defs>
+                <linearGradient id="cbar" x1="0" y1="1" x2="0" y2="0"><stop offset="0%" stop-color="#c8894a"/><stop offset="100%" stop-color="#e8a96a"/></linearGradient>
+              </defs>
+              <line x1="50" y1="10" x2="50" y2="150" stroke="#2a2a2a" stroke-width="1"/>
+              <line x1="50" y1="150" x2="545" y2="150" stroke="#2a2a2a" stroke-width="1"/>
+              <!-- cost columns -->
+              <rect class="ac-col" x="80"  y="150" width="60" height="0" rx="3" fill="url(#cbar)" data-h="100" data-delay="0"/>
+              <rect class="ac-col" x="170" y="150" width="60" height="0" rx="3" fill="url(#cbar)" data-h="70"  data-delay="100"/>
+              <rect class="ac-col" x="260" y="150" width="60" height="0" rx="3" fill="url(#cbar)" data-h="50"  data-delay="200"/>
+              <rect class="ac-col" x="350" y="150" width="60" height="0" rx="3" fill="url(#cbar)" data-h="40"  data-delay="300"/>
+              <rect class="ac-col" x="440" y="150" width="60" height="0" rx="3" fill="url(#cbar)" data-h="25"  data-delay="400"/>
+              <!-- labels -->
+              <text x="110" y="168" font-size="9" fill="#888" text-anchor="middle" font-family="Manrope,sans-serif">Structural</text>
+              <text x="200" y="168" font-size="9" fill="#888" text-anchor="middle" font-family="Manrope,sans-serif">MEP</text>
+              <text x="290" y="168" font-size="9" fill="#888" text-anchor="middle" font-family="Manrope,sans-serif">Finishes</text>
+              <text x="380" y="168" font-size="9" fill="#888" text-anchor="middle" font-family="Manrope,sans-serif">Civil</text>
+              <text x="470" y="168" font-size="9" fill="#888" text-anchor="middle" font-family="Manrope,sans-serif">GC&amp;P</text>
+              <!-- total label -->
+              <text x="50" y="7" font-size="10" fill="#e8a96a" text-anchor="start" font-family="Manrope,sans-serif" font-weight="700">75,000+ SF · Correctional Facility</text>
+            </svg>
+          </div>
+          <p class="ac-desc">Developed a comprehensive bid estimate and cost report in collaboration with peers for a 75,000+ SF correctional facility in upstate New York. The estimate encompassed direct costs, indirect costs, and contingencies — synthesizing quantity take-offs with market pricing to produce a competitive and defensible bid package.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Analysis -->
+    <div class="ac-item" id="ac-3">
+      <button class="ac-toggle" aria-expanded="false" aria-controls="ac-body-3">
+        <span class="ac-name">Risk Analysis</span>
+        <span class="ac-chevron" aria-hidden="true">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 7,10 12,4"/></svg>
+        </span>
+      </button>
+      <div class="ac-body" id="ac-body-3" role="region">
+        <div class="ac-inner">
+          <div class="ac-infographic" id="ac-infographic-3">
+            <!-- Risk matrix + bell curve -->
+            <svg width="560" height="180" viewBox="0 0 560 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Risk probability distribution">
+              <!-- Risk heat matrix -->
+              <rect x="20" y="10" width="36" height="36" rx="3" fill="#2d1a0e" opacity="0.8"/>
+              <rect x="58" y="10" width="36" height="36" rx="3" fill="#4a2800" opacity="0.8"/>
+              <rect x="96" y="10" width="36" height="36" rx="3" fill="#7a3e00" opacity="0.8"/>
+              <rect x="20" y="48" width="36" height="36" rx="3" fill="#4a2800" opacity="0.8"/>
+              <rect x="58" y="48" width="36" height="36" rx="3" fill="#7a3e00" opacity="0.8"/>
+              <rect x="96" y="48" width="36" height="36" rx="3" fill="#c8894a" opacity="0.9"/>
+              <rect x="20" y="86" width="36" height="36" rx="3" fill="#7a3e00" opacity="0.8"/>
+              <rect x="58" y="86" width="36" height="36" rx="3" fill="#c8894a" opacity="0.9"/>
+              <rect x="96" y="86" width="36" height="36" rx="3" fill="#e8a96a" opacity="1"/>
+              <!-- matrix labels -->
+              <text x="38" y="132" font-size="8" fill="#666" text-anchor="middle" font-family="Manrope,sans-serif">Low</text>
+              <text x="76" y="132" font-size="8" fill="#666" text-anchor="middle" font-family="Manrope,sans-serif">Med</text>
+              <text x="114" y="132" font-size="8" fill="#666" text-anchor="middle" font-family="Manrope,sans-serif">High</text>
+              <text x="10" y="32" font-size="7" fill="#666" text-anchor="middle" transform="rotate(-90,10,60)" font-family="Manrope,sans-serif">Impact</text>
+              <!-- separator -->
+              <line x1="160" y1="10" x2="160" y2="165" stroke="#1e1e1e" stroke-width="1"/>
+              <!-- Monte Carlo bell curve animated -->
+              <text x="200" y="10" font-size="10" fill="#e8a96a" font-family="Manrope,sans-serif" font-weight="700">Monte Carlo Distribution</text>
+              <path id="ac-bell" d="M175,150 C200,150 215,140 230,100 C245,60 255,20 280,15 C305,20 315,60 330,100 C345,140 360,150 385,150" stroke="#e8a96a" stroke-width="2" fill="none" stroke-dasharray="300" stroke-dashoffset="300"/>
+              <path d="M175,150 C200,150 215,140 230,100 C245,60 255,20 280,15 C305,20 315,60 330,100 C345,140 360,150 385,150 L385,150 L175,150 Z" fill="#c8894a" opacity="0.08"/>
+              <line x1="280" y1="15" x2="280" y2="150" stroke="#e8a96a" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+              <text x="280" y="8" font-size="8" fill="#e8a96a" text-anchor="middle" font-family="Manrope,sans-serif">P50</text>
+              <!-- risk dots -->
+              <circle class="ac-rdot" cx="230" cy="86" r="0" fill="#e8a96a" data-delay="400"/>
+              <circle class="ac-rdot" cx="310" cy="48" r="0" fill="#c8894a" data-delay="550"/>
+              <circle class="ac-rdot" cx="355" cy="105" r="0" fill="#7a3e00" data-delay="700"/>
+              <text x="420" y="95" font-size="9" fill="#888" font-family="Manrope,sans-serif">■ High risk</text>
+              <rect x="412" y="86" width="7" height="7" fill="#e8a96a"/>
+              <text x="420" y="115" font-size="9" fill="#888" font-family="Manrope,sans-serif">■ Med risk</text>
+              <rect x="412" y="106" width="7" height="7" fill="#c8894a"/>
+              <text x="420" y="135" font-size="9" fill="#888" font-family="Manrope,sans-serif">■ Low risk</text>
+              <rect x="412" y="126" width="7" height="7" fill="#7a3e00"/>
+            </svg>
+          </div>
+          <p class="ac-desc">Identified project risks, maintained a risk register, and performed qualitative and quantitative risk analyses using @RISK Monte Carlo simulations and Oracle Primavera. Gained insights into risk monitoring and developed mitigation strategies to minimize potential project impacts.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+  <!-- Software & Tools -->
+  <div class="am-tools">
+    <p class="am-tools-label">Software &amp; Tools</p>
+    <div class="am-tools-track-wrap">
+      <div class="am-tools-track" id="tools-track">
+        <!-- set 1 -->
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Revit</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">AutoCAD</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Procore</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Oracle Primavera</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">MS Excel</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Bluebeam Revu</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">@RISK</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">OnScreen Takeoff</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Sage 100 Contractor</span></div></div>
+        <!-- set 2 (duplicate for seamless loop) -->
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Revit</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">AutoCAD</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Procore</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Oracle Primavera</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">MS Excel</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Bluebeam Revu</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">@RISK</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">OnScreen Takeoff</span></div></div>
+        <div class="am-tool-item"><div class="am-tool-pill"><span class="am-tool-name">Sage 100 Contractor</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- References -->
+  <div class="am-refs">
+    <p class="am-refs-label">References</p>
+
+    <div class="ref-item">
+      <button class="ref-toggle" aria-expanded="false" onclick="toggleRef(this)">
+        <div>
+          <div class="ref-name">Alessandro Potenti</div>
+          <div class="ref-role">President, Double P Construction</div>
+        </div>
+        <span class="ref-chevron" aria-hidden="true">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 7,10 12,4"/></svg>
+        </span>
+      </button>
+      <div class="ref-body">
+        <div class="ref-inner">
+          <div class="ref-content">
+            <p>I am pleased to write this letter of recommendation for Aaryaman, who recently completed an internship with our company while attending New York University.</p>
+            <p>Although Aaryaman&#8217;s internship focused primarily on Construction Management, he quickly became involved in a variety of projects and was always willing to help wherever he was needed.</p>
+            <p>I asked several members of our team who worked directly with him to share their thoughts about his time with us, and their comments were consistently positive.</p>
+            <p>One of the things that stood out about Aaryaman was his initiative. When given an assignment, he took the time to ask questions and gather the information he needed to understand not only what was being asked of him, but why. If he encountered an area of construction or one of our processes that was unfamiliar to him, he made the effort to learn it. He was also very good about having his work reviewed before considering a project complete.</p>
+            <p>Aaryaman was willing to take on responsibilities outside of his primary area of interest when the need arose. This included assisting with plan revisions, modifications, renderings, and other architectural-related work. He approached these assignments with the same level of care and attention that he gave to his construction management responsibilities.</p>
+            <p>Our team also appreciated how receptive he was to feedback. He listened to suggestions and constructive criticism, thought about what was being shared with him, and then applied it to his future work. He is a fast learner, attentive to detail, dependable, and willing to step in and help others.</p>
+            <p>Just as important, Aaryaman was a pleasure to have in the office. He is well spoken, professional, cooperative, and easy to work with. He interacted well with everyone on the team and brought a positive attitude to the workplace.</p>
+            <p>Aaryaman made a very positive impression during his internship, and we were glad to have him as part of our team. I am confident that the initiative, professionalism, and willingness to learn that he demonstrated with us will serve him well as he continues his education and begins his professional career.</p>
+            <p>I am happy to recommend Aaryaman and wish him continued success.</p>
+            <p><a href="mailto:Apotenti@doublepconstruction.com">Apotenti@doublepconstruction.com</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-item">
+      <button class="ref-toggle" aria-expanded="false" onclick="toggleRef(this)">
+        <div>
+          <div class="ref-name">Lawrence Chiarelli</div>
+          <div class="ref-role">Program Director, NYU</div>
+        </div>
+        <span class="ref-chevron" aria-hidden="true">
+          <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="2,4 7,10 12,4"/></svg>
+        </span>
+      </button>
+      <div class="ref-body">
+        <div class="ref-inner">
+          <div class="ref-content">
+            <a href="mailto:lchiarelli@nyu.edu">lchiarelli@nyu.edu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Back button lives outside the panel so position:fixed works correctly -->
+<a class="am-close" href="#" id="close-aboutme">← Back</a>
+
+<!-- About another me panel -->
+<section class="about-panel" id="about-panel" aria-label="About me, but a little personal">
+  <!-- Screen 1: map -->
+  <div class="about-map-screen">
+  <div class="about-map-wrap">
+    <svg class="about-map-svg" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <!-- Natural Earth 110m land (accurate coastlines) -->
+      <g class="map-land" fill="#2a1f14" stroke="#3d2e1e" stroke-width="0.4">
+        <path d="M334.5,472.3L332.9,475.0L315.9,472.9L331.6,471.2L334.5,472.3Z M57.8,470.8L52.4,471.2L45.2,468.3L52.1,467.7L57.8,470.8Z M374.6,466.8L379.6,472.3L349.5,474.0L364.8,466.8L374.6,466.8Z M159.4,454.6L166.9,454.6L170.2,454.1L166.0,455.8L159.4,454.6Z M148.4,453.5L155.5,455.2L146.4,454.1L148.4,453.5Z M217.5,449.2L232.8,451.4L215.7,449.7L217.5,449.2Z M304.9,441.3L308.9,450.5L302.6,451.4L291.6,449.1L299.8,447.8L304.9,441.3Z M341.0,426.5L327.7,430.0L327.4,433.9L317.6,438.8L328.3,446.4L331.0,454.7L303.9,462.9L285.4,463.1L295.4,466.4L283.3,469.9L338.3,481.2L420.7,473.2L417.5,470.2L401.0,470.7L400.6,467.6L451.3,458.7L456.4,456.9L454.3,455.2L457.1,453.2L480.9,447.0L499.4,449.0L521.5,444.1L530.0,446.8L537.3,444.4L575.3,445.7L594.1,440.3L607.4,443.8L651.5,432.8L670.6,438.8L691.4,438.7L693.5,442.3L688.4,445.3L691.9,446.3L688.7,449.6L694.1,450.7L705.2,444.1L744.4,433.9L766.1,437.2L777.0,436.8L785.6,432.1L794.9,435.9L815.6,433.0L832.9,436.9L874.3,433.9L875.2,431.4L881.8,436.0L904.1,435.9L913.4,440.0L975.6,449.2L954.4,461.8L957.6,467.2L963.9,468.8L949.4,469.9L943.9,474.8L970.6,482.8L1000.0,485.3L1000.0,500.0L0.0,500.0L0.0,485.3L2.6,483.7L102.5,486.2L73.4,482.5L75.4,477.9L64.3,475.3L93.3,473.2L68.5,469.6L60.1,463.6L79.6,465.0L94.2,462.4L93.9,459.4L124.4,456.4L183.5,454.8L201.2,458.8L221.9,458.0L212.0,451.7L292.0,455.2L312.9,451.3L309.6,443.7L311.8,437.0L325.0,429.6L341.0,426.5Z M307.4,395.9L319.3,401.9L307.7,404.2L292.6,396.8L302.5,400.2L307.4,395.9Z M333.3,392.4L338.8,394.2L330.0,394.0L333.3,392.4Z M695.9,386.3L691.0,388.3L691.5,385.1L695.9,386.3Z M903.9,363.3L911.9,363.5L910.9,370.0L905.7,371.0L903.9,363.3Z M980.6,363.7L984.0,364.9L980.8,371.8L970.4,379.6L963.0,378.4L980.6,363.7Z M979.5,345.9L991.0,355.2L995.9,354.7L986.8,365.8L982.8,359.7L985.3,353.8L979.5,345.9Z M964.2,311.6L959.7,310.2L955.6,305.8L958.4,306.8L964.2,311.6Z M993.5,298.3L996.0,300.4L992.7,300.5L993.5,298.3Z M1000.0,296.0L996.1,296.2L1000.0,294.6L1000.0,296.0Z M0.2,295.8L0.0,294.6L0.6,294.5L0.2,295.8Z M966.2,295.7L965.3,296.1L964.5,294.1L966.2,295.7Z M964.2,291.5L964.6,293.7L962.9,290.6L964.2,291.5Z M636.7,283.4L639.9,293.6L630.8,319.3L622.3,319.4L620.2,311.3L623.5,295.0L632.5,290.5L636.7,283.4Z M898.8,288.2L903.8,291.6L906.6,302.7L925.4,322.4L924.7,337.9L916.7,354.0L906.4,358.4L902.9,355.3L898.9,357.8L890.7,355.6L883.9,345.5L880.1,347.9L882.8,341.4L877.7,346.9L873.0,340.6L864.8,337.5L827.8,347.4L819.5,345.0L821.4,337.8L814.8,322.5L817.3,323.1L815.0,317.7L817.1,310.4L835.7,304.7L849.1,289.5L860.1,291.6L867.7,280.9L879.1,282.9L876.4,291.7L889.5,299.2L895.9,279.6L898.8,288.2Z M949.8,279.0L949.2,280.1L948.1,278.3L949.8,279.0Z M833.1,276.0L834.2,278.5L830.5,276.5L833.1,276.0Z M945.5,276.1L944.0,277.2L943.6,275.7L945.5,276.1Z M947.0,273.1L948.7,277.2L946.1,273.1L947.0,273.1Z M853.7,273.3L842.9,278.4L847.5,274.0L853.7,273.3Z M825.2,273.5L830.9,274.2L824.3,275.1L825.2,273.5Z M835.3,272.9L841.0,274.0L833.1,274.5L835.3,272.9Z M941.2,271.0L944.2,273.7L939.5,270.6L941.2,271.0Z M936.5,269.5L935.8,269.9L934.8,268.3L936.5,269.5Z M794.6,266.4L807.7,268.0L821.4,273.3L792.7,269.0L794.6,266.4Z M874.2,267.3L872.8,269.2L873.6,265.1L874.2,267.3Z M933.4,268.2L931.0,268.2L929.2,264.3L933.4,268.2Z M922.2,265.2L917.3,267.5L912.0,266.0L918.9,265.2L920.9,261.6L922.2,265.2Z M852.8,258.7L852.4,260.5L850.0,258.8L852.8,258.7Z M855.9,257.9L863.4,260.7L855.3,259.4L855.9,257.9Z M922.9,259.0L924.5,263.2L918.5,257.6L922.9,259.0Z M872.6,253.2L876.3,259.4L884.2,254.7L901.6,260.7L918.6,279.4L910.9,278.1L902.1,271.2L896.2,275.9L882.3,273.4L885.2,270.3L883.1,265.0L869.4,261.4L866.6,257.8L871.4,256.2L862.6,252.6L872.6,253.2Z M847.9,246.1L843.6,249.3L833.8,249.3L835.9,253.9L842.6,251.7L837.5,255.3L842.1,264.8L837.5,262.7L836.0,257.3L834.5,265.4L831.6,264.9L829.9,257.8L833.4,248.4L847.9,246.1Z M855.4,244.0L855.9,249.0L855.8,252.5L855.4,244.0Z M793.9,266.3L785.0,261.7L764.7,234.8L770.8,235.4L788.4,249.7L787.3,252.0L794.7,258.5L793.9,266.3Z M825.9,241.0L830.5,247.5L827.3,247.8L822.6,261.1L806.2,258.2L803.0,251.3L804.6,244.4L813.9,241.4L824.2,230.8L831.1,235.0L825.9,241.0Z M851.0,226.6L848.3,234.5L843.4,228.2L838.7,230.0L848.4,222.9L851.0,226.6Z M725.6,232.8L721.9,231.2L722.6,222.7L727.2,229.1L725.6,232.8Z M330.3,219.8L328.4,222.2L327.9,222.0L330.3,219.8Z M844.7,218.8L841.7,224.9L839.9,223.0L844.7,218.8Z M832.5,220.7L825.5,226.8L832.0,218.4L832.5,220.7Z M839.0,218.3L842.0,217.8L838.9,221.0L839.0,218.3Z M845.2,215.1L849.4,219.3L846.7,221.8L845.2,215.1Z M836.6,212.7L836.8,216.1L834.2,212.6L836.6,212.7Z M837.0,198.6L840.3,202.5L838.1,210.2L844.3,211.7L844.7,215.2L833.5,208.4L837.0,198.6Z M315.9,198.6L313.4,200.1L313.2,199.0L315.9,198.6Z M288.3,200.3L285.5,200.8L282.4,199.4L288.3,200.3Z M296.1,195.4L305.7,195.4L310.2,198.3L301.7,201.1L293.2,199.0L299.1,198.1L296.1,195.4Z M806.5,198.1L801.8,198.6L801.7,196.2L807.7,194.2L806.5,198.1Z M70.0,195.8L66.8,197.1L67.1,193.7L70.0,195.8Z M66.0,191.9L65.5,192.9L64.7,191.9L66.0,191.9Z M63.2,191.1L64.5,191.5L63.0,191.4L63.2,191.1Z M61.0,189.7L60.8,190.8L60.3,190.1L61.0,189.7Z M57.3,188.3L57.0,189.2L56.1,188.7L57.3,188.3Z M271.5,185.6L282.4,187.5L293.9,193.7L284.0,194.8L285.9,193.3L281.3,190.0L272.8,187.1L264.0,189.2L271.5,185.6Z M284.6,184.0L282.2,181.7L282.8,180.0L283.6,180.1L284.6,184.0Z M837.5,179.7L835.4,189.0L833.6,184.6L837.5,179.7Z M283.8,175.4L280.8,176.6L280.6,175.6L283.8,175.4Z M286.1,176.1L285.6,178.1L283.9,174.9L286.1,176.1Z M874.0,155.1L872.8,157.8L867.7,158.4L869.2,155.4L874.0,155.1Z M596.0,150.9L591.6,154.0L589.6,152.5L591.5,151.7L596.0,150.9Z M568.7,153.0L567.4,151.8L573.0,151.9L568.7,153.0Z M543.1,143.8L541.9,148.3L534.5,145.5L534.9,144.1L543.1,143.8Z M525.6,135.5L526.9,141.2L524.5,141.9L522.7,136.2L525.6,135.5Z M892.7,135.1L889.6,152.4L877.2,157.0L875.2,153.9L863.9,155.9L866.7,157.9L861.7,162.7L859.5,157.5L868.4,151.6L876.9,151.3L879.8,146.4L887.3,143.8L888.6,137.3L892.7,135.1Z M526.1,130.5L525.6,135.1L523.7,132.6L526.1,130.5Z M894.4,123.5L903.7,126.7L904.3,129.8L888.8,134.5L894.4,123.5Z M321.1,120.2L325.2,121.1L327.7,121.0L325.3,122.3L321.1,120.2Z M328.3,113.6L323.4,112.8L320.8,111.5L325.4,111.9L328.3,113.6Z M156.9,115.2L151.0,114.4L143.4,109.0L150.7,110.3L156.9,115.2Z M346.1,106.7L342.2,111.6L351.5,113.2L352.6,120.4L349.3,117.4L346.1,119.8L335.4,117.8L346.1,106.7Z M130.4,101.6L134.0,99.7L135.6,105.1L130.4,101.6Z M895.0,99.4L901.8,114.0L897.7,113.0L898.6,121.8L894.7,122.3L895.0,99.4Z M481.1,104.8L472.3,106.1L473.1,100.3L481.3,96.7L484.3,98.5L481.1,104.8Z M534.4,94.1L533.6,97.8L530.3,95.1L534.4,94.1Z M77.4,90.0L72.2,92.4L70.4,90.4L77.4,90.0Z M491.7,87.1L488.7,90.1L494.6,89.8L491.3,94.5L504.7,103.5L504.0,107.5L485.4,111.2L490.5,107.1L485.4,105.6L488.3,104.7L487.3,101.4L491.8,100.0L482.9,92.3L486.1,87.1L491.7,87.1Z M39.8,82.5L38.4,84.0L34.8,82.7L39.8,82.5Z M278.0,76.7L278.7,78.8L276.8,77.7L278.0,76.7Z M272.5,75.8L269.3,77.3L266.7,76.5L268.7,75.2L272.5,75.8Z M23.0,72.8L26.4,73.1L31.4,74.2L29.1,75.1L23.0,72.8Z M257.7,73.5L264.0,68.8L277.5,73.0L257.7,73.5Z M459.7,65.4L462.2,69.1L448.2,73.6L436.8,72.3L439.5,71.1L433.5,69.7L438.3,68.4L432.4,67.7L459.7,65.4Z M291.3,61.1L286.1,63.6L285.5,62.3L291.3,61.1Z M13.8,65.0L28.1,66.7L20.7,68.2L19.6,71.5L3.6,66.4L0.0,69.5L0.0,58.4L13.8,65.0Z M227.2,55.2L232.6,59.0L222.8,57.2L227.2,55.2Z M1000.0,51.3L997.0,53.4L996.5,52.5L1000.0,51.3Z M6.7,52.0L0.0,53.2L0.0,51.3L6.7,52.0Z M248.5,57.0L248.5,59.8L252.2,57.6L257.4,63.3L262.4,55.9L270.5,56.5L274.2,57.9L274.3,62.2L261.8,65.1L241.2,77.7L237.0,86.3L243.6,91.4L271.5,96.8L271.9,102.0L278.0,107.8L281.7,104.0L278.3,98.1L287.4,93.0L281.9,86.7L285.2,83.7L283.0,76.9L294.9,76.5L306.7,80.4L307.5,86.2L312.1,88.3L320.6,82.4L328.3,93.5L340.7,98.3L345.3,105.1L333.2,110.4L315.6,110.5L302.5,119.9L319.3,113.2L320.9,121.6L329.1,122.5L331.9,119.4L333.9,122.4L318.4,129.0L316.2,126.5L321.0,124.2L313.5,124.6L303.6,130.5L305.7,134.3L290.2,140.3L291.5,143.3L289.1,146.6L287.9,141.2L289.6,151.2L274.1,162.7L276.7,180.0L266.4,166.4L239.3,167.5L231.7,171.4L228.1,187.7L232.5,196.3L237.7,199.6L244.3,198.0L249.2,191.7L258.2,190.2L253.0,205.9L268.3,207.6L267.2,219.2L273.8,225.6L279.0,223.3L286.6,226.0L291.9,219.2L300.7,215.5L300.8,224.8L305.7,216.2L310.6,220.7L328.1,220.2L326.7,222.4L341.3,233.4L357.5,238.3L360.0,250.2L375.3,254.3L376.2,257.5L388.9,258.0L401.1,264.3L403.5,270.4L392.6,286.3L386.3,310.9L367.6,319.1L364.2,329.7L350.5,345.5L337.7,344.2L342.3,352.5L335.5,357.6L326.8,357.9L325.7,364.0L319.1,364.1L323.7,368.2L313.1,376.5L316.7,383.7L307.9,390.9L310.7,395.4L302.8,399.5L291.8,395.2L290.0,385.2L294.1,380.4L289.9,379.6L298.0,367.7L293.5,370.1L295.6,353.2L301.6,340.1L305.1,304.9L301.5,298.2L288.9,290.7L274.3,267.0L278.4,257.4L275.2,252.9L285.8,239.3L282.8,226.9L279.0,225.2L275.3,229.9L262.1,222.4L257.0,213.1L212.5,199.2L207.0,194.6L205.5,186.7L181.2,161.7L196.0,185.6L188.4,181.3L180.4,173.0L182.9,170.6L174.2,158.2L164.9,153.9L154.4,138.0L153.6,116.2L159.5,119.2L158.8,113.9L146.0,108.8L127.6,88.5L91.3,80.9L78.6,85.7L81.6,79.8L59.9,94.5L42.3,98.9L61.9,90.1L63.8,86.3L50.1,87.0L50.3,84.4L38.6,79.2L42.9,74.6L53.4,72.9L53.4,70.0L41.8,71.0L33.0,67.6L50.9,66.3L36.8,60.1L65.1,51.8L120.8,58.6L144.1,54.2L197.6,62.8L199.5,59.3L205.1,58.9L218.2,62.1L228.7,59.5L233.0,63.1L238.2,58.1L232.0,55.3L235.5,50.2L248.5,57.0Z M168.3,51.2L194.7,47.3L199.5,51.0L198.9,47.0L204.1,47.0L219.2,56.7L185.2,59.6L174.1,55.7L187.7,54.5L168.3,51.2Z M207.6,45.4L207.3,47.9L202.9,45.9L207.6,45.4Z M287.9,46.9L279.2,47.9L275.3,46.3L283.2,45.4L287.9,46.9Z M259.5,46.8L271.3,45.1L275.7,49.8L283.8,47.9L299.3,51.2L314.0,57.8L308.9,59.1L328.2,64.3L322.4,69.4L311.1,65.9L320.4,73.9L308.9,72.9L316.2,78.0L292.1,70.3L284.1,71.6L283.6,68.6L294.6,68.2L297.4,61.9L280.7,55.1L250.3,52.2L251.6,46.9L261.6,45.0L259.5,46.8Z M217.9,46.2L229.5,45.1L227.6,47.2L231.3,50.9L215.3,48.6L221.0,48.0L217.9,46.2Z M898.9,46.6L894.7,46.7L888.5,46.2L894.6,44.8L898.9,46.6Z M248.6,44.8L235.0,49.8L233.3,46.0L248.6,44.8Z M179.1,45.9L158.1,53.1L150.2,50.4L155.7,45.3L153.0,43.6L179.1,45.9Z M918.7,41.4L915.5,42.5L905.9,41.2L906.6,40.3L918.7,41.4Z M236.5,39.9L238.5,42.8L231.1,41.9L236.5,39.9Z M903.0,40.1L886.0,42.7L880.5,40.9L885.6,38.5L903.0,40.1Z M226.4,36.9L227.3,41.7L215.3,40.1L215.1,38.0L226.4,36.9Z M179.4,37.6L206.4,40.3L188.3,43.3L183.7,42.4L189.5,41.2L173.0,41.0L179.4,37.6Z M659.8,53.6L642.9,50.0L654.5,41.4L691.3,37.4L662.4,43.6L653.9,49.0L659.8,53.6Z M230.2,36.8L252.3,40.0L278.2,41.9L250.7,43.0L230.2,36.8Z M177.2,34.3L174.7,37.4L158.7,38.6L169.2,34.7L177.2,34.3Z M789.9,34.2L817.0,39.3L803.9,43.9L852.7,45.7L864.7,53.4L867.4,50.5L888.5,51.4L886.5,48.8L890.2,47.6L971.0,59.2L974.5,58.3L973.5,55.3L988.1,55.9L1000.0,58.4L1000.0,69.5L992.8,70.5L997.9,76.9L982.4,78.7L973.1,83.7L954.3,83.7L950.0,88.2L953.3,90.0L950.3,97.6L935.5,108.3L933.1,92.3L956.9,76.2L944.8,81.8L942.5,78.4L935.3,79.3L928.4,84.0L930.7,85.7L895.0,86.0L875.4,98.0L888.6,99.5L892.7,104.9L883.9,121.4L854.3,139.6L859.6,147.8L858.6,152.5L851.3,154.5L852.4,147.5L846.4,144.1L848.1,140.1L836.3,142.0L837.9,136.3L827.9,141.1L830.3,146.0L839.9,146.0L831.0,153.0L838.6,162.0L838.0,171.6L821.9,186.7L807.7,190.6L806.8,193.5L801.5,189.7L794.1,195.1L803.7,212.7L803.3,217.6L792.1,226.1L791.9,222.4L778.0,212.8L775.6,224.3L786.0,234.7L789.5,246.4L781.6,242.3L778.0,232.0L773.2,228.3L774.3,218.2L769.9,203.0L761.6,205.4L762.0,199.4L753.9,186.8L741.6,190.3L723.1,205.8L721.8,221.2L715.4,227.9L704.3,205.6L701.8,190.7L695.8,192.0L684.4,179.4L659.4,178.5L656.9,174.6L652.0,176.4L643.1,172.6L639.2,166.3L633.3,166.7L643.9,183.3L650.0,183.0L656.6,176.7L657.9,182.7L666.1,188.0L653.5,202.1L620.8,214.9L618.5,203.4L596.2,172.1L597.0,168.1L594.2,173.2L590.1,167.1L602.4,188.9L604.1,198.3L620.3,215.6L618.7,217.4L623.9,221.0L642.0,216.6L641.8,220.4L632.6,238.3L608.9,263.0L613.3,290.8L596.6,305.0L598.9,315.9L590.5,321.5L589.5,329.9L571.6,344.3L551.0,344.8L532.8,300.2L538.0,279.8L533.1,264.0L524.4,253.1L526.1,239.6L523.6,236.7L516.4,238.2L512.0,232.6L494.5,236.9L475.0,236.6L453.9,216.2L451.0,209.1L455.1,199.7L452.9,189.2L483.5,150.7L494.0,152.3L526.4,146.2L530.8,147.5L528.7,156.2L553.0,165.9L559.8,158.8L580.3,164.2L593.8,164.0L600.4,148.2L576.8,148.2L572.7,140.4L593.1,133.3L606.5,136.3L615.8,133.4L601.9,124.3L608.7,118.7L597.1,121.5L600.9,124.7L594.1,126.8L590.2,124.1L592.5,122.0L585.4,120.6L576.9,131.7L580.0,136.0L562.9,138.2L566.8,145.4L562.5,148.9L553.9,138.2L554.3,134.1L536.5,123.0L535.0,127.5L551.3,138.4L546.9,137.7L544.7,144.5L542.8,138.8L524.7,126.8L508.6,130.3L494.0,148.1L485.1,150.1L475.3,147.6L473.9,130.5L496.2,127.7L496.7,122.2L487.2,114.8L495.5,114.9L494.6,111.7L503.7,110.8L513.1,102.5L522.6,101.3L523.7,91.4L529.4,89.6L526.8,95.9L530.4,100.0L554.6,98.8L559.1,96.7L559.9,90.5L567.0,91.6L564.8,85.6L580.9,83.3L559.2,81.3L559.8,74.5L570.6,69.1L561.6,67.4L549.6,75.7L547.6,79.6L552.2,83.1L544.1,94.2L536.0,96.2L528.8,84.8L515.7,87.3L513.9,77.9L541.0,61.6L568.2,52.7L578.2,52.3L614.1,62.6L606.6,66.7L592.2,64.9L602.8,72.6L603.3,69.0L610.0,70.8L616.9,65.3L622.1,66.5L620.7,59.5L628.5,60.4L628.7,64.8L649.2,58.7L666.5,60.3L669.7,58.5L668.2,56.0L690.3,60.9L692.2,59.4L685.9,57.1L685.3,52.7L692.2,47.7L701.6,47.8L699.6,51.6L704.6,60.0L698.0,65.8L701.2,66.2L708.5,61.8L703.1,51.5L707.4,47.7L712.1,52.4L710.8,50.3L715.5,49.3L726.4,50.7L723.6,45.4L741.2,44.6L738.9,43.2L742.1,41.3L789.9,34.2Z M237.7,33.8L232.9,34.6L232.1,33.8L237.7,33.8Z M194.8,33.3L188.7,35.0L184.6,34.1L194.8,33.3Z M568.7,33.7L562.5,34.9L557.6,34.2L563.6,32.1L568.7,33.7Z M195.4,31.7L192.0,32.2L187.4,32.2L190.3,31.0L195.4,31.7Z M234.6,32.2L227.4,33.1L226.0,30.9L234.6,32.2Z M222.1,32.4L207.8,32.3L210.5,31.5L207.0,29.7L222.1,32.4Z M791.9,32.5L776.2,33.6L783.6,29.6L791.9,32.5Z M529.0,28.7L559.8,30.7L544.2,36.7L529.0,28.7Z M563.7,26.0L576.1,27.6L548.2,26.9L563.7,26.0Z M643.1,25.8L632.2,27.7L624.6,26.1L643.1,25.8Z M777.6,30.9L763.8,30.4L753.3,26.8L766.5,24.3L778.3,28.4L777.6,30.9Z M243.3,24.3L261.6,29.6L247.8,32.7L231.4,27.3L243.3,24.3Z M245.6,22.5L328.2,20.5L286.4,29.7L290.6,31.9L276.2,38.4L251.4,37.6L256.2,35.6L254.8,33.6L264.0,34.6L255.7,32.3L263.6,29.6L258.5,27.1L272.6,26.5L245.6,22.5Z M424.7,18.0L442.1,20.2L411.4,21.7L466.1,24.2L444.3,27.3L450.7,27.4L445.3,31.2L448.7,36.2L439.8,37.1L444.9,38.6L442.6,41.2L446.2,43.6L434.5,46.4L438.1,49.5L431.1,49.1L439.6,53.7L429.0,51.6L426.8,54.9L437.9,55.2L389.4,68.2L381.1,75.9L379.5,83.1L365.9,80.9L356.6,73.3L350.1,63.4L358.7,55.8L348.1,56.6L349.0,53.3L357.2,54.0L344.9,51.0L348.0,48.4L337.3,40.2L309.7,38.7L301.7,36.1L314.5,35.1L296.4,33.2L317.5,29.5L311.0,27.5L326.0,22.9L376.3,23.2L370.1,20.5L424.7,18.0Z"/>
+      </g>
+
+      <!-- Hidden reference paths for JS to follow -->
+      <defs>
+        <path id="seg-0" d="M745.6,175.8 Q711.9,170.7 707.8,212.8"/>
+        <path id="seg-1" d="M707.8,212.8 Q711.2,215.3 715.6,214.0"/>
+        <path id="seg-2" d="M715.6,214.0 Q520,20 294.6,137.1"/>
+        <path id="seg-3" d="M294.6,137.1 Q269.9,143.4 277.4,177.4"/>
+      </defs>
+
+      <!-- Career animation layer (fades out after journey) -->
+      <!-- Phase title: always visible during career phase -->
+      <text id="career-phase-label"
+        x="500" y="420"
+        font-family="Manrope,sans-serif" font-size="13" font-weight="600"
+        fill="#c8894a" text-anchor="middle" letter-spacing="0.06em"
+        opacity="0" style="transition:opacity 0.8s ease">PLACES I HAVE LIVED IN</text>
+
+      <g class="career-layer" id="career-layer">
+        <!-- Trail paths drawn by JS -->
+        <g id="trail-group"></g>
+
+        <!-- Location dots (shown as dot arrives) -->
+        <g class="journey-dots">
+          <circle class="dot" id="dot-0" cx="745.6" cy="175.8" r="3.5" fill="#e8a96a" stroke="#1a1410" stroke-width="1.2"/>
+          <circle class="dot" id="dot-1" cx="707.8" cy="212.8" r="3.5" fill="#e8a96a" stroke="#1a1410" stroke-width="1.2"/>
+          <circle class="dot" id="dot-2" cx="715.6" cy="214.0" r="3.5" fill="#e8a96a" stroke="#1a1410" stroke-width="1.2"/>
+          <circle class="dot" id="dot-3" cx="294.6" cy="137.1" r="3.5" fill="#e8a96a" stroke="#1a1410" stroke-width="1.2"/>
+          <circle class="dot" id="dot-4" cx="277.4" cy="177.4" r="3.5" fill="#e8a96a" stroke="#1a1410" stroke-width="1.2"/>
+        </g>
+
+
+
+        <!-- Travelling dot (glow + core) -->
+        <circle class="travel-dot-glow" id="travel-glow" cx="0" cy="0" r="8" opacity="0"/>
+        <circle class="travel-dot-core" id="travel-core" cx="0" cy="0" r="3.5" opacity="0"/>
+
+        <!-- Location labels -->
+        <g class="journey-labels" font-family="Manrope,sans-serif" font-size="11" font-weight="600" fill="#f0ead8">
+          <text class="label" id="lbl-0" x="752" y="170">Siliguri</text>
+          <text class="label" id="lbl-1" x="678" y="226">Manipal</text>
+          <text class="label" id="lbl-2" x="718" y="230">Bangalore</text>
+          <text class="label" id="lbl-3" x="299" y="130">Brooklyn</text>
+          <text class="label" id="lbl-4" x="236" y="192">Fort Lauderdale</text>
+        </g>
+      </g>
+
+      <!-- Travel pins layer (appears after career animation fades) -->
+      <!-- Coordinates: equirectangular x=(lon+180)/360*1000, y=(90-lat)/180*500 -->
+      <!-- India: 20°N 78°E → x=716,y=194 | Nepal: 28°N 84°E → x=733,y=172 | Bhutan: 27°N 90°E → x=750,y=175 -->
+      <!-- Kazakhstan: 48°N 68°E → x=689,y=117 | Kenya: -1°N 38°E → x=606,y=253 | Norway: 62°N 10°E → x=530,y=78 -->
+      <!-- Turkey: 39°N 35°E → x=597,y=142 | New Zealand: -40°S 174°E → x=983,y=361 | Finland: 64°N 26°E → x=572,y=72 -->
+      <!-- USA: 38°N -97°E → x=231,y=144 | Singapore: 1°N 104°E → x=789,y=247 -->
+      <g id="travel-pins-layer">
+        <!-- "Places I have Travelled to" label -->
+        <text class="travel-phase-label" id="travel-phase-label"
+          x="500" y="420"
+          font-family="Manrope,sans-serif" font-size="13" font-weight="600"
+          fill="#c8894a" text-anchor="middle" letter-spacing="0.06em"
+          opacity="0">PLACES I HAVE TRAVELLED TO</text>
+
+        <!-- Each pin: stem line + circle head. transform-box=fill-box lets scale work from pin tip -->
+        <!-- India: Delhi 77.2°E 28.6°N → x=714.4 y=170.6 -->
+        <g class="travel-pin" id="tp-india" style="transform-origin:714px 171px">
+          <line class="travel-pin-stem" x1="714" y1="171" x2="714" y2="159"/>
+          <circle class="travel-pin-head" cx="714" cy="156" r="4"/>
+        </g>
+        <!-- Nepal: 84.1°E 28.4°N → x=733.6 y=171.1 -->
+        <g class="travel-pin" id="tp-nepal" style="transform-origin:734px 171px">
+          <line class="travel-pin-stem" x1="734" y1="171" x2="734" y2="157"/>
+          <circle class="travel-pin-head" cx="734" cy="154" r="4"/>
+        </g>
+        <!-- Bhutan: 90.4°E 27.5°N → x=751.1 y=173.6 -->
+        <g class="travel-pin" id="tp-bhutan" style="transform-origin:751px 174px">
+          <line class="travel-pin-stem" x1="751" y1="174" x2="751" y2="162"/>
+          <circle class="travel-pin-head" cx="751" cy="159" r="4"/>
+        </g>
+        <!-- Kazakhstan: 66.9°E 48°N → x=685.8 y=116.7 -->
+        <g class="travel-pin" id="tp-kaz" style="transform-origin:686px 117px">
+          <line class="travel-pin-stem" x1="686" y1="117" x2="686" y2="105"/>
+          <circle class="travel-pin-head" cx="686" cy="102" r="4"/>
+        </g>
+        <!-- Kenya: Nairobi 36.8°E -1.3°N → x=602.2 y=253.6 -->
+        <g class="travel-pin" id="tp-kenya" style="transform-origin:602px 254px">
+          <line class="travel-pin-stem" x1="602" y1="254" x2="602" y2="242"/>
+          <circle class="travel-pin-head" cx="602" cy="239" r="4"/>
+        </g>
+        <!-- Norway: Oslo 10.7°E 59.9°N → x=529.7 y=83.6 -->
+        <g class="travel-pin" id="tp-norway" style="transform-origin:530px 84px">
+          <line class="travel-pin-stem" x1="530" y1="84" x2="530" y2="72"/>
+          <circle class="travel-pin-head" cx="530" cy="69" r="4"/>
+        </g>
+        <!-- Turkey: Ankara 32.9°E 39.9°N → x=591.4 y=139.2 -->
+        <g class="travel-pin" id="tp-turkey" style="transform-origin:591px 139px">
+          <line class="travel-pin-stem" x1="591" y1="139" x2="591" y2="127"/>
+          <circle class="travel-pin-head" cx="591" cy="124" r="4"/>
+        </g>
+        <!-- Finland: Helsinki 25°E 60.2°N → x=569.4 y=82.8 -->
+        <g class="travel-pin" id="tp-finland" style="transform-origin:569px 83px">
+          <line class="travel-pin-stem" x1="569" y1="83" x2="569" y2="71"/>
+          <circle class="travel-pin-head" cx="569" cy="68" r="4"/>
+        </g>
+        <!-- New Zealand: Wellington 174.8°E -41.3°N → x=985.6 y=364.7 -->
+        <g class="travel-pin" id="tp-nz" style="transform-origin:986px 365px">
+          <line class="travel-pin-stem" x1="986" y1="365" x2="986" y2="353"/>
+          <circle class="travel-pin-head" cx="986" cy="350" r="4"/>
+        </g>
+        <!-- USA: center 98°W 39.5°N → x=227.8 y=140.3 -->
+        <g class="travel-pin" id="tp-usa" style="transform-origin:228px 140px">
+          <line class="travel-pin-stem" x1="228" y1="140" x2="228" y2="128"/>
+          <circle class="travel-pin-head" cx="228" cy="125" r="4"/>
+        </g>
+        <!-- Singapore: 103.8°E 1.4°N → x=788.3 y=246.1 -->
+        <g class="travel-pin" id="tp-singapore" style="transform-origin:788px 246px">
+          <line class="travel-pin-stem" x1="788" y1="246" x2="788" y2="234"/>
+          <circle class="travel-pin-head" cx="788" cy="231" r="4"/>
+        </g>
+      </g>
+    </svg>
+  </div>
+  <div class="map-scroll-hint" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    <svg viewBox="0 0 24 24" style="opacity:0.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </div>
+  <a class="about-close" href="#" id="close-about">&darr; scroll or close</a>
+  </div><!-- /about-map-screen -->
+
+  <!-- Screen 2: media tiles -->
+  <div class="about-tiles-screen">
+    <p class="about-tiles-heading">The things I notice</p>
+    <div class="about-tiles-grid">
+
+      <!-- Row 1: 3+6+3 = 12 -->
+      <div class="tile t-3-port"><img src="/_blob/a562fb7cbea6d85819f96ced4a1fc701" alt="Northern lights Finland"></div>
+      <div class="tile t-6-land"><img src="/_blob/dc458fa038d5677d4f44559119e618a5" alt="Parkside Ave subway"></div>
+      <div class="tile t-3-sq">  <img src="/_blob/4e6953070bf75c9d137825eaaf87dc05" alt="Art installation"></div>
+
+      <!-- Row 2: 8+4 = 12 -->
+      <div class="tile t-8-wide"><img src="/_blob/7a47be65a5ee35dcd022712c484acff8" alt="Helsinki library"></div>
+      <div class="tile t-4-land"><img src="/_blob/774c0e2c9e3e8851673720651583278d" alt="Mountains from train Kazakhstan"></div>
+
+      <!-- Row 3: 4+3+5 = 12 -->
+      <div class="tile t-4-wide"><img src="/_blob/bd68d8c639717597255388baea9da809" alt="Misty mountain clouds"></div>
+      <div class="tile t-3-port"><img src="/_blob/dec334a47932e97c02d7eb19fcde8b8e" alt="Red rock formations"></div>
+      <div class="tile t-5-land"><img src="/_blob/b7a850a2fdc66ac8198ce4446f4ef875" alt="Golden Gate Bridge"></div>
+
+      <!-- Row 4: 3+5+4 = 12 -->
+      <div class="tile t-3-port"><img src="/_blob/146df9ce6e37eb6c0ce8cdd93229dd7c" alt="Lone tree winter sunset"></div>
+      <div class="tile t-5-land"><img src="/_blob/e8aa37a0705f80083c34f0bfaffaf8dc" alt="Fall foliage"></div>
+      <div class="tile t-4-land"><img src="/_blob/6bebc2d4216d83d9462766ab300753e5" alt="Gazebo in park"></div>
+
+      <!-- Row 5: 6+3+3 = 12 -->
+      <div class="tile t-6-land"><img src="/_blob/a513568f8a3ab29e1c51275452e0c304" alt="NYC sunset skyline"></div>
+      <div class="tile t-3-port"><img src="/_blob/93826177e66610b7b068ed8aa40755a2" alt="Cathedral stained glass"></div>
+      <div class="tile t-3-land"><img src="/_blob/ab4f8eff0e49adc662361ae5cab4b887" alt="NYC street classic car" style="object-position: center 70%;"></div>
+
+      <!-- Row 6: 7+5 = 12 -->
+      <div class="tile t-7-land"><img src="/_blob/8a8de8f4e21599766637d842bfcd2b16" alt="Chicago riverfront building"></div>
+      <div class="tile t-5-port"><img src="/_blob/f6520d385b4b82059526b73d8972915b" alt="Oculus at night"></div>
+
+      <!-- Row 7: 3+3+6 = 12 -->
+      <div class="tile t-3-port"><img src="/_blob/9b05faa8ea617a8d7c8550b5cdb12b11" alt="Kazakhstan brutalist tower"></div>
+      <div class="tile t-3-port"><img src="/_blob/0ea80e13980d22b207e15b1bb401a99c" alt="Ephesus Library of Celsus columns"></div>
+      <div class="tile t-6-land"><img src="/_blob/22130905731f7d36f791fcc6aa1b9a07" alt="Horseback riders Kazakhstan mountains" style="object-position: center 60%;"></div>
+
+      <!-- Row 8: 12 = full-width panoramic -->
+      <div class="tile t-12-wide"><img src="/_blob/2e7764f9a2d8a42ea1845707376a2e6f" alt="Cappadocia hot air balloons"></div>
+
+    </div>
+
+    <a class="about-tiles-close" href="#" id="close-about-2">↑ Back to map</a>
+  </div><!-- /about-tiles-screen -->
+
+  <!-- Screen 3: films & series -->
+  <div class="about-films-screen">
+        <p class="about-films-sub">Films &amp; series that stuck with me</p>
+
+    <div class="films-track-wrap">
+      <div class="films-track" id="filmsTrack">
+
+        <!-- 1 The Sopranos -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#1a0a0a,#3d1010,#1c0c0c)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg1" cx="50%" cy="60%" r="60%"><stop offset="0%" stop-color="#8b0000" stop-opacity="0.5"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg1)"/><text x="100" y="80" text-anchor="middle" font-family="Georgia,serif" font-size="52" font-weight="bold" fill="#c0392b" opacity="0.18">S</text><rect x="30" y="135" width="140" height="1" fill="#5a0000" opacity="0.5"/><text x="100" y="152" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#e8c8a0" letter-spacing="3">SOPRANOS</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#7a5a3a" letter-spacing="1">1999 – 2007</text></svg></div></div>
+
+        <!-- 2 Curb Your Enthusiasm -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#0d1a0d,#1a3a1a,#0a150a)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg2" cx="50%" cy="50%" r="60%"><stop offset="0%" stop-color="#2d7a2d" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg2)"/><text x="100" y="80" text-anchor="middle" font-family="Arial,sans-serif" font-size="52" font-weight="900" fill="#4a9a4a" opacity="0.15">CE</text><rect x="30" y="125" width="140" height="1" fill="#2d7a2d" opacity="0.4"/><text x="100" y="143" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#a8d8a8" letter-spacing="2">CURB YOUR</text><text x="100" y="159" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#c8f0c8" letter-spacing="2">ENTHUSIASM</text><text x="100" y="176" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#4a7a4a" letter-spacing="1">2000 – 2024</text></svg></div></div>
+
+        <!-- 3 Breaking Bad -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#0a0d00,#1e2800,#080b00)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg3" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#6aaa00" stop-opacity="0.35"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg3)"/><text x="100" y="80" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="48" font-weight="900" fill="#8bc400" opacity="0.15">BB</text><rect x="30" y="128" width="140" height="1" fill="#6aaa00" opacity="0.3"/><text x="100" y="147" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="15" font-weight="900" fill="#b8e000" letter-spacing="1">BREAKING</text><text x="100" y="165" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="15" font-weight="900" fill="#d4f040" letter-spacing="1">BAD</text><text x="100" y="182" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#4a6000" letter-spacing="1">GILLIGAN · 2008–2013</text></svg></div></div>
+
+        <!-- 4 Shawshank Redemption -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#0a0c14,#1a2040,#080a10)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg4" cx="50%" cy="30%" r="60%"><stop offset="0%" stop-color="#4a6aaa" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg4)"/><path d="M20 120 Q100 70 180 120" stroke="#c8b090" stroke-width="0.8" fill="none" opacity="0.3"/><rect x="30" y="130" width="140" height="1" fill="#4a6aaa" opacity="0.3"/><text x="100" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#e8d8c0" letter-spacing="1">SHAWSHANK</text><text x="100" y="164" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#f0e8d8" letter-spacing="1">REDEMPTION</text><text x="100" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#5a6a8a" letter-spacing="1">DARABONT · 1994</text></svg></div></div>
+
+        <!-- 5 The Dark Knight -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#000005,#050520,#000000)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg5" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#2040c0" stop-opacity="0.3"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg5)"/><path d="M100 40 L118 72 L158 72 L127 94 L140 130 L100 108 L60 130 L73 94 L42 72 L82 72 Z" fill="#1a2a5a" opacity="0.5"/><path d="M100 48 L115 75 L148 75 L123 95 L133 124 L100 104 L67 124 L77 95 L52 75 L85 75 Z" fill="none" stroke="#4060c0" stroke-width="0.8" opacity="0.6"/><rect x="30" y="143" width="140" height="1" fill="#2040c0" opacity="0.3"/><text x="100" y="160" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#e0e8ff" letter-spacing="2">THE DARK KNIGHT</text><text x="100" y="178" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#404880" letter-spacing="1">NOLAN · 2008</text></svg></div></div>
+
+        <!-- 6 No Country for Old Men -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#120c05,#2a1a08,#0e0805)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg6" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#8a6020" stop-opacity="0.35"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg6)"/><line x1="0" y1="60" x2="200" y2="60" stroke="#5a3a10" stroke-width="0.5" opacity="0.4"/><line x1="0" y1="140" x2="200" y2="140" stroke="#5a3a10" stroke-width="0.5" opacity="0.4"/><text x="100" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#c8a060" letter-spacing="2">NO COUNTRY</text><text x="100" y="163" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#d0a870" letter-spacing="2">FOR OLD MEN</text><text x="100" y="180" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#6a4a20" letter-spacing="1">COEN BROTHERS · 2007</text></svg></div></div>
+
+        <!-- 7 Dark -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#000000,#0a0a1a,#000000)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg7" cx="50%" cy="50%" r="40%"><stop offset="0%" stop-color="#3a3a8a" stop-opacity="0.5"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg7)"/><circle cx="100" cy="85" r="38" fill="none" stroke="#3a3a8a" stroke-width="0.8" opacity="0.5"/><circle cx="100" cy="85" r="24" fill="none" stroke="#5050b0" stroke-width="0.8" opacity="0.6"/><circle cx="100" cy="85" r="8" fill="#7070d0" opacity="0.4"/><rect x="30" y="138" width="140" height="1" fill="#3a3a8a" opacity="0.4"/><text x="100" y="156" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="22" font-weight="900" fill="#e0e0ff" letter-spacing="6">DARK</text><text x="100" y="174" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#5050a0" letter-spacing="1">BO ODAR · 2017–2020</text></svg></div></div>
+
+        <!-- 8 Full Metal Jacket -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#0a0a08,#1e1e10,#080808)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg8" cx="30%" cy="40%" r="60%"><stop offset="0%" stop-color="#8a7a30" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg8)"/><line x1="0" y1="45" x2="200" y2="45" stroke="#5a5020" stroke-width="0.5" opacity="0.5"/><line x1="0" y1="48" x2="200" y2="48" stroke="#5a5020" stroke-width="0.4" opacity="0.3"/><rect x="30" y="133" width="140" height="1" fill="#8a7a30" opacity="0.3"/><text x="100" y="151" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#c8b860" letter-spacing="1">FULL METAL</text><text x="100" y="168" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#d8c870" letter-spacing="1">JACKET</text><text x="100" y="185" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#6a6030" letter-spacing="1">KUBRICK · 1987</text></svg></div></div>
+
+        <!-- 9 Shutter Island -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#050a14,#0f1e30,#030810)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg9" cx="50%" cy="35%" r="55%"><stop offset="0%" stop-color="#204060" stop-opacity="0.6"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg9)"/><path d="M0 155 Q50 120 100 135 Q150 150 200 115 L200 200 L0 200 Z" fill="#0a1828" opacity="0.8"/><rect x="30" y="130" width="140" height="1" fill="#204060" opacity="0.4"/><text x="100" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#a8c8e8" letter-spacing="3">SHUTTER</text><text x="100" y="165" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#c0d8f0" letter-spacing="3">ISLAND</text><text x="100" y="182" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#304860" letter-spacing="1">SCORSESE · 2010</text></svg></div></div>
+
+        <!-- 10 Pulp Fiction -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#14080a,#2a1015,#0e0508)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg10" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#a02030" stop-opacity="0.3"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg10)"/><rect x="25" y="110" width="150" height="2" fill="#d0a030" opacity="0.4"/><text x="100" y="105" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="28" font-weight="900" fill="#e8b840" letter-spacing="2">PULP</text><rect x="25" y="128" width="150" height="2" fill="#d0a030" opacity="0.4"/><text x="100" y="150" text-anchor="middle" font-family="Impact,Arial Black,sans-serif" font-size="28" font-weight="900" fill="#f0c850" letter-spacing="2">FICTION</text><text x="100" y="172" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#6a4a18" letter-spacing="1">TARANTINO · 1994</text></svg></div></div>
+
+        <!-- 11 Forrest Gump -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#080c14,#101828,#060a10)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg11" cx="50%" cy="30%" r="55%"><stop offset="0%" stop-color="#3060a0" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg11)"/><path d="M10 145 Q100 95 190 145" stroke="#c8e0f0" stroke-width="0.6" fill="none" opacity="0.25"/><path d="M10 155 Q100 105 190 155" stroke="#c8e0f0" stroke-width="0.6" fill="none" opacity="0.15"/><rect x="30" y="130" width="140" height="1" fill="#3060a0" opacity="0.3"/><text x="100" y="149" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-style="italic" fill="#c8e0f8" letter-spacing="1">Forrest</text><text x="100" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-style="italic" fill="#e0f0ff" letter-spacing="1">Gump</text><text x="100" y="184" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#405878" letter-spacing="1">ZEMECKIS · 1994</text></svg></div></div>
+
+        <!-- 12 The Wolf of Wall Street -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#141004,#28200a,#100c04)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg12" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#c09020" stop-opacity="0.35"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg12)"/><rect x="30" y="128" width="140" height="1" fill="#c89820" opacity="0.4"/><text x="100" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#d4a830" letter-spacing="2">THE WOLF OF</text><text x="100" y="162" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#d4a830" letter-spacing="2">WALL STREET</text><rect x="30" y="168" width="140" height="1" fill="#c89820" opacity="0.4"/><text x="100" y="182" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#7a6020" letter-spacing="1">SCORSESE · 2013</text></svg></div></div>
+
+        <!-- 13 Casino -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#140008,#300010,#100006)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg13" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#cc0033" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg13)"/><circle cx="100" cy="82" r="36" fill="none" stroke="#cc0033" stroke-width="0.8" opacity="0.35"/><circle cx="100" cy="82" r="28" fill="none" stroke="#ff3355" stroke-width="0.5" opacity="0.25"/><text x="100" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="18" font-weight="bold" fill="#ff3355" opacity="0.3">♦</text><rect x="30" y="133" width="140" height="1" fill="#cc0033" opacity="0.5"/><text x="100" y="152" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="bold" fill="#f5c0c0" letter-spacing="4">CASINO</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#804040" letter-spacing="1">SCORSESE · 1995</text></svg></div></div>
+
+        <!-- 14 Inglourious Basterds -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#0c0a00,#221e00,#080600)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg14" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#aa8800" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg14)"/><line x1="0" y1="55" x2="200" y2="55" stroke="#665500" stroke-width="0.5" opacity="0.5"/><line x1="0" y1="57" x2="200" y2="57" stroke="#665500" stroke-width="0.3" opacity="0.3"/><rect x="30" y="130" width="140" height="1" fill="#aa8800" opacity="0.4"/><text x="100" y="148" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="10" font-weight="900" fill="#d4b040" letter-spacing="1">INGLOURIOUS</text><text x="100" y="164" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="10" font-weight="900" fill="#f0cc50" letter-spacing="1">BASTERDS</text><text x="100" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#664400" letter-spacing="1">TARANTINO · 2009</text></svg></div></div>
+
+        <!-- 15 The Brutalist -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#0a0a0a,#1a1a1a,#060606)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg15" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#888888" stop-opacity="0.25"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg15)"/><rect x="80" y="20" width="40" height="95" fill="#333" opacity="0.6"/><rect x="60" y="80" width="80" height="35" fill="#222" opacity="0.5"/><rect x="30" y="130" width="140" height="1" fill="#888" opacity="0.4"/><text x="100" y="151" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#cccccc" letter-spacing="3">BRUTALIST</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#666666" letter-spacing="1">CORBET · 2024</text></svg></div></div>
+
+        <!-- 16 Limitless -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#000814,#001428,#000408)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg16" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#0088ff" stop-opacity="0.5"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg16)"/><circle cx="100" cy="82" r="40" fill="none" stroke="#0088ff" stroke-width="0.6" opacity="0.4"/><circle cx="100" cy="82" r="28" fill="none" stroke="#44aaff" stroke-width="0.5" opacity="0.5"/><circle cx="100" cy="82" r="14" fill="none" stroke="#88ccff" stroke-width="0.5" opacity="0.5"/><circle cx="100" cy="82" r="4" fill="#aaddff" opacity="0.6"/><rect x="30" y="135" width="140" height="1" fill="#0088ff" opacity="0.4"/><text x="100" y="155" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="16" font-weight="900" fill="#88ccff" letter-spacing="3">LIMITLESS</text><text x="100" y="172" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#224466" letter-spacing="1">BURGER · 2011</text></svg></div></div>
+
+        <!-- 17 Inception -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#040810,#081020,#020408)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg17" cx="50%" cy="50%" r="55%"><stop offset="0%" stop-color="#4466cc" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg17)"/><line x1="40" y1="100" x2="160" y2="100" stroke="#4466cc" stroke-width="0.6" opacity="0.4"/><line x1="100" y1="30" x2="100" y2="115" stroke="#4466cc" stroke-width="0.5" opacity="0.3" transform="rotate(-20 100 100)"/><line x1="100" y1="30" x2="100" y2="115" stroke="#4466cc" stroke-width="0.5" opacity="0.3" transform="rotate(20 100 100)"/><rect x="30" y="133" width="140" height="1" fill="#4466cc" opacity="0.4"/><text x="100" y="152" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="16" font-weight="900" fill="#aabbee" letter-spacing="3">INCEPTION</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#334477" letter-spacing="1">NOLAN · 2010</text></svg></div></div>
+
+        <!-- 18 Dune -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#140c00,#2a1800,#0c0800)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg18" cx="50%" cy="30%" r="60%"><stop offset="0%" stop-color="#c87800" stop-opacity="0.45"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg18)"/><path d="M0 110 Q50 85 100 95 Q150 105 200 80 L200 200 L0 200 Z" fill="#1a0c00" opacity="0.7"/><path d="M0 125 Q50 100 100 110 Q150 120 200 95" stroke="#c87800" stroke-width="0.5" fill="none" opacity="0.3"/><rect x="30" y="130" width="140" height="1" fill="#c87800" opacity="0.5"/><text x="100" y="150" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="bold" fill="#e8a840" letter-spacing="5">DUNE</text><text x="100" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#7a5010" letter-spacing="1">VILLENEUVE · 2021</text></svg></div></div>
+
+        <!-- 19 Coherence -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#040814,#080e24,#020408)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg19b" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#2255bb" stop-opacity="0.5"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg19b)"/><line x1="60" y1="60" x2="140" y2="140" stroke="#4488ff" stroke-width="0.7" opacity="0.4"/><line x1="140" y1="60" x2="60" y2="140" stroke="#4488ff" stroke-width="0.7" opacity="0.4"/><circle cx="100" cy="100" r="30" fill="none" stroke="#6699ff" stroke-width="0.6" opacity="0.45"/><circle cx="100" cy="100" r="8" fill="#aabbff" opacity="0.3"/><rect x="30" y="135" width="140" height="1" fill="#2255bb" opacity="0.5"/><text x="100" y="154" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#aabbff" letter-spacing="3">COHERENCE</text><text x="100" y="171" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#334477" letter-spacing="1">BYRKIT · 2013</text></svg></div></div>
+
+        <!-- 20 After Hours -->
+        <div class="film-card"><div class="film-poster" style="background:linear-gradient(160deg,#0c000a,#1e0018,#080006)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><defs><radialGradient id="sg19" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#9900cc" stop-opacity="0.4"/><stop offset="100%" stop-color="#000" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#sg19)"/><circle cx="100" cy="78" r="34" fill="none" stroke="#cc44ff" stroke-width="0.6" opacity="0.35"/><circle cx="100" cy="78" r="20" fill="none" stroke="#aa22ee" stroke-width="0.5" opacity="0.45"/><line x1="100" y1="44" x2="100" y2="78" stroke="#cc44ff" stroke-width="0.8" opacity="0.5"/><line x1="100" y1="78" x2="118" y2="92" stroke="#cc44ff" stroke-width="0.8" opacity="0.5"/><rect x="30" y="130" width="140" height="1" fill="#9900cc" opacity="0.5"/><text x="100" y="150" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#dd99ff" letter-spacing="3">AFTER HOURS</text><text x="100" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#663388" letter-spacing="1">SCORSESE · 1985</text></svg></div></div>
+
+        <!-- duplicate set for seamless loop -->
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#1a0a0a,#3d1010,#1c0c0c)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#8b000022"/><rect x="30" y="135" width="140" height="1" fill="#5a0000" opacity="0.5"/><text x="100" y="152" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#e8c8a0" letter-spacing="3">SOPRANOS</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#7a5a3a" letter-spacing="1">1999 – 2007</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#0d1a0d,#1a3a1a,#0a150a)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#2d7a2d22"/><rect x="30" y="125" width="140" height="1" fill="#2d7a2d" opacity="0.4"/><text x="100" y="143" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#a8d8a8" letter-spacing="2">CURB YOUR</text><text x="100" y="159" text-anchor="middle" font-family="Arial,sans-serif" font-size="11" font-weight="700" fill="#c8f0c8" letter-spacing="2">ENTHUSIASM</text><text x="100" y="176" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#4a7a4a" letter-spacing="1">2000 – 2024</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#0a0d00,#1e2800,#080b00)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#6aaa0022"/><rect x="30" y="128" width="140" height="1" fill="#6aaa00" opacity="0.3"/><text x="100" y="147" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="15" font-weight="900" fill="#b8e000" letter-spacing="1">BREAKING BAD</text><text x="100" y="165" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#4a6000" letter-spacing="1">GILLIGAN · 2008–2013</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#0a0c14,#1a2040,#080a10)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#4a6aaa22"/><rect x="30" y="130" width="140" height="1" fill="#4a6aaa" opacity="0.3"/><text x="100" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#e8d8c0" letter-spacing="1">SHAWSHANK</text><text x="100" y="164" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="bold" fill="#f0e8d8" letter-spacing="1">REDEMPTION</text><text x="100" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#5a6a8a" letter-spacing="1">DARABONT · 1994</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#000005,#050520,#000000)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#2040c022"/><rect x="30" y="143" width="140" height="1" fill="#2040c0" opacity="0.3"/><text x="100" y="160" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#e0e8ff" letter-spacing="2">THE DARK KNIGHT</text><text x="100" y="178" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#404880" letter-spacing="1">NOLAN · 2008</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#120c05,#2a1a08,#0e0805)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#8a602022"/><line x1="0" y1="140" x2="200" y2="140" stroke="#5a3a10" stroke-width="0.5" opacity="0.4"/><text x="100" y="155" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#c8a060" letter-spacing="2">NO COUNTRY FOR OLD MEN</text><text x="100" y="173" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#6a4a20" letter-spacing="1">COEN BROTHERS · 2007</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#000000,#0a0a1a,#000000)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#3a3a8a22"/><rect x="30" y="138" width="140" height="1" fill="#3a3a8a" opacity="0.4"/><text x="100" y="156" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="22" font-weight="900" fill="#e0e0ff" letter-spacing="6">DARK</text><text x="100" y="174" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#5050a0" letter-spacing="1">BO ODAR · 2017–2020</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#0a0a08,#1e1e10,#080808)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#8a7a3022"/><rect x="30" y="133" width="140" height="1" fill="#8a7a30" opacity="0.3"/><text x="100" y="151" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="13" font-weight="900" fill="#c8b860" letter-spacing="1">FULL METAL JACKET</text><text x="100" y="169" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#6a6030" letter-spacing="1">KUBRICK · 1987</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#050a14,#0f1e30,#030810)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#20406022"/><rect x="30" y="130" width="140" height="1" fill="#204060" opacity="0.4"/><text x="100" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="14" font-weight="bold" fill="#a8c8e8" letter-spacing="3">SHUTTER ISLAND</text><text x="100" y="166" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#304860" letter-spacing="1">SCORSESE · 2010</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#14080a,#2a1015,#0e0508)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#a0203022"/><rect x="25" y="110" width="150" height="2" fill="#d0a030" opacity="0.4"/><text x="100" y="137" text-anchor="middle" font-family="Impact,sans-serif" font-size="28" fill="#f0c850" letter-spacing="2">PULP FICTION</text><text x="100" y="158" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#6a4a18" letter-spacing="1">TARANTINO · 1994</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#080c14,#101828,#060a10)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#3060a022"/><rect x="30" y="130" width="140" height="1" fill="#3060a0" opacity="0.3"/><text x="100" y="149" text-anchor="middle" font-family="Georgia,serif" font-size="16" font-style="italic" fill="#c8e0f8">Forrest Gump</text><text x="100" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#405878" letter-spacing="1">ZEMECKIS · 1994</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#141004,#28200a,#100c04)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#c0902022"/><rect x="30" y="128" width="140" height="1" fill="#c89820" opacity="0.4"/><text x="100" y="146" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#d4a830" letter-spacing="2">WOLF OF WALL ST.</text><rect x="30" y="153" width="140" height="1" fill="#c89820" opacity="0.4"/><text x="100" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#7a6020" letter-spacing="1">SCORSESE · 2013</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#140008,#300010,#100006)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#cc003322"/><rect x="30" y="133" width="140" height="1" fill="#cc0033" opacity="0.5"/><text x="100" y="152" text-anchor="middle" font-family="Georgia,serif" font-size="20" font-weight="bold" fill="#f5c0c0" letter-spacing="4">CASINO</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#804040" letter-spacing="1">SCORSESE · 1995</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#0c0a00,#221e00,#080600)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#aa880022"/><rect x="30" y="130" width="140" height="1" fill="#aa8800" opacity="0.4"/><text x="100" y="148" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="10" font-weight="900" fill="#d4b040" letter-spacing="1">INGLOURIOUS</text><text x="100" y="164" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="10" font-weight="900" fill="#f0cc50" letter-spacing="1">BASTERDS</text><text x="100" y="181" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#664400" letter-spacing="1">TARANTINO · 2009</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#0a0a0a,#1a1a1a,#060606)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#88888822"/><rect x="30" y="130" width="140" height="1" fill="#888" opacity="0.4"/><text x="100" y="151" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#cccccc" letter-spacing="3">BRUTALIST</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#666666" letter-spacing="1">CORBET · 2024</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#000814,#001428,#000408)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#0088ff22"/><rect x="30" y="135" width="140" height="1" fill="#0088ff" opacity="0.4"/><text x="100" y="155" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="16" font-weight="900" fill="#88ccff" letter-spacing="3">LIMITLESS</text><text x="100" y="172" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#224466" letter-spacing="1">BURGER · 2011</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#040810,#081020,#020408)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#4466cc22"/><rect x="30" y="133" width="140" height="1" fill="#4466cc" opacity="0.4"/><text x="100" y="152" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="16" font-weight="900" fill="#aabbee" letter-spacing="3">INCEPTION</text><text x="100" y="170" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#334477" letter-spacing="1">NOLAN · 2010</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#140c00,#2a1800,#0c0800)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#c8780022"/><rect x="30" y="130" width="140" height="1" fill="#c87800" opacity="0.5"/><text x="100" y="150" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="bold" fill="#e8a840" letter-spacing="5">DUNE</text><text x="100" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#7a5010" letter-spacing="1">VILLENEUVE · 2021</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#040814,#080e24,#020408)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#2255bb22"/><rect x="30" y="135" width="140" height="1" fill="#2255bb" opacity="0.5"/><text x="100" y="154" text-anchor="middle" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#aabbff" letter-spacing="3">COHERENCE</text><text x="100" y="171" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#334477" letter-spacing="1">BYRKIT · 2013</text></svg></div></div>
+        <div class="film-card" aria-hidden="true"><div class="film-poster" style="background:linear-gradient(160deg,#0c000a,#1e0018,#080006)"><svg width="100%" height="100%" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0"><rect width="200" height="200" fill="#9900cc22"/><rect x="30" y="130" width="140" height="1" fill="#9900cc" opacity="0.5"/><text x="100" y="150" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="bold" fill="#dd99ff" letter-spacing="3">AFTER HOURS</text><text x="100" y="168" text-anchor="middle" font-family="Arial,sans-serif" font-size="9" fill="#663388" letter-spacing="1">SCORSESE · 1985</text></svg></div></div>
+
+      </div><!-- /films-track -->
+    </div><!-- /films-track-wrap -->
+
+    <a class="about-tiles-close" href="#" id="close-about-3">↑ Back to top</a>
+  </div><!-- /about-films-screen -->
+
+  <!-- Sports screen -->
+  <div class="about-sports-screen">
+    <p class="sports-sub">Sports I never miss</p>
+
+    <div class="sports-grid">
+
+      <!-- Basketball -->
+      <div class="sport-card">
+        <div class="sport-card-court">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="none"/>
+          <rect x="20" y="20" width="360" height="260" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <rect x="20" y="95" width="80" height="110" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <rect x="300" y="95" width="80" height="110" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <circle cx="200" cy="150" r="36" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="200" y1="20" x2="200" y2="280" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <path d="M20 88 Q108 150 20 212" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <path d="M380 88 Q292 150 380 212" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <circle cx="100" cy="150" r="36" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.6" stroke-dasharray="5 5"/>
+          <circle cx="300" cy="150" r="36" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.6" stroke-dasharray="5 5"/>
+          <path d="M20 130 Q44 150 20 170" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+          <path d="M380 130 Q356 150 380 170" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="0.8"/>
+          <path id="bball-path" d="M340,150 C280,148 230,152 180,140 C130,128 90,110 60,90" fill="none" stroke="none"/>
+
+          <circle r="5" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="0.8">
+            <animateMotion dur="2.8s" repeatCount="indefinite" rotate="auto"><mpath href="#bball-path"/></animateMotion>
+          </circle>
+        </svg>
+        </div>
+        <span class="sport-label">Basketball</span>
+      </div>
+
+      <!-- Tennis -->
+      <div class="sport-card">
+        <div class="sport-card-court">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="none"/>
+          <rect x="30" y="20" width="340" height="260" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="68" y1="20" x2="68" y2="280" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="332" y1="20" x2="332" y2="280" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="68" y1="60" x2="332" y2="60" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="68" y1="240" x2="332" y2="240" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="200" y1="60" x2="200" y2="240" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="30" y1="150" x2="370" y2="150" stroke="rgba(255,255,255,0.35)" stroke-width="1"/>
+          <line x1="27" y1="138" x2="27" y2="162" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+          <line x1="373" y1="138" x2="373" y2="162" stroke="rgba(255,255,255,0.3)" stroke-width="1"/>
+          <!-- rally: straight line baseline to baseline and back -->
+          <path id="tennis-path" d="M80,150 L320,150 L80,150" fill="none" stroke="none"/>
+
+          <circle r="5" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="0.8">
+            <animateMotion dur="1.6s" repeatCount="indefinite"><mpath href="#tennis-path"/></animateMotion>
+          </circle>
+        </svg>
+        </div>
+        <span class="sport-label">Tennis</span>
+      </div>
+
+      <!-- Soccer -->
+      <div class="sport-card">
+        <div class="sport-card-court">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="none"/>
+          <rect x="18" y="18" width="364" height="264" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <line x1="200" y1="18" x2="200" y2="282" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <circle cx="200" cy="150" r="40" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <circle cx="200" cy="150" r="2" fill="rgba(255,255,255,0.3)"/>
+          <rect x="18" y="88" width="70" height="124" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <rect x="312" y="88" width="70" height="124" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="0.8"/>
+          <rect x="18" y="118" width="26" height="64" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
+          <rect x="356" y="118" width="26" height="64" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
+          <path d="M88 120 Q112 150 88 180" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
+          <path d="M312 120 Q288 150 312 180" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
+          <rect x="6" y="126" width="12" height="48" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+          <rect x="382" y="126" width="12" height="48" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="0.8"/>
+          <path id="soccer-path" d="M200,150 C220,148 250,145 280,138 C310,131 335,125 350,138" fill="none" stroke="none"/>
+
+          <circle r="5" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="0.8">
+            <animateMotion dur="3s" repeatCount="indefinite" rotate="auto"><mpath href="#soccer-path"/></animateMotion>
+          </circle>
+        </svg>
+        </div>
+        <span class="sport-label">Soccer</span>
+      </div>
+
+      <!-- Golf -->
+      <div class="sport-card">
+        <div class="sport-card-court">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <rect width="400" height="300" fill="none"/>
+          <!-- fairway outline -->          
+          <path d="M60,280 C80,240 110,205 150,178 C190,151 230,135 268,120 C306,105 328,88 342,62" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="28" stroke-linecap="round"/>
+          <!-- green -->          
+          <ellipse cx="330" cy="68" rx="42" ry="30" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
+          <!-- bunkers -->          
+          <ellipse cx="288" cy="108" rx="18" ry="11" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6" stroke-dasharray="3 3"/>
+          <ellipse cx="152" cy="178" rx="14" ry="9" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6" stroke-dasharray="3 3"/>
+          <!-- water -->          
+          <ellipse cx="98" cy="205" rx="30" ry="17" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.6"/>
+          <!-- pin -->          
+          <line x1="330" y1="68" x2="330" y2="40" stroke="rgba(255,255,255,0.4)" stroke-width="0.7"/>
+          <polygon points="330,40 342,46 330,52" fill="rgba(255,255,255,0.35)"/>
+          <circle cx="330" cy="68" r="3" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="0.6"/>
+          <!-- tee -->          
+          <circle cx="68" cy="260" r="4" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+          <path id="golf-path" d="M68,260 C100,240 140,210 180,185 C220,160 260,140 295,118 C315,106 328,90 330,68" fill="none" stroke="none"/>
+
+          <circle r="5" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="0.8">
+            <animateMotion dur="3.5s" repeatCount="indefinite" rotate="auto" calcMode="spline" keyTimes="0;0.5;1" keySplines="0.4 0 0.6 1; 0.4 0 0.6 1">
+              <mpath href="#golf-path"/>
+            </animateMotion>
+          </circle>
+        </svg>
+        </div>
+        <span class="sport-label">Golf</span>
+      </div>
+
+    </div><!-- /sports-grid -->
+
+    <a class="about-tiles-close" href="#" id="close-about-4">↑ Back to top</a>
+  </div><!-- /about-sports-screen -->
+
+  <!-- Music screen -->
+  <div class="about-music-screen">
+    <p class="music-sub">My Top Artists</p>
+    <div class="music-stage" id="music-stage">
+      <div class="music-ring"></div>
+      <div class="music-ring-2"></div>
+      <!-- Central music note -->
+      <div class="music-logo-wrap">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="18" cy="50" r="8" stroke="white" stroke-width="1.5" fill="none"/>
+          <circle cx="46" cy="44" r="8" stroke="white" stroke-width="1.5" fill="none"/>
+          <line x1="26" y1="50" x2="26" y2="14" stroke="white" stroke-width="1.5"/>
+          <line x1="54" y1="44" x2="54" y2="8" stroke="white" stroke-width="1.5"/>
+          <line x1="26" y1="14" x2="54" y2="8" stroke="white" stroke-width="1.5"/>
+        </svg>
+      </div>
+      <!-- Artist names injected by JS -->
+    </div>
+    <a class="about-tiles-close" href="#" id="close-about-5">← Back to home</a>
+  </div><!-- /about-music-screen -->
+
+</section>
+
+<section class="resume" id="resume-view" aria-label="Resume" hidden>
+  <div class="resume-bar">
+    <a class="text-link" href="#" id="close-resume">&larr; Back</a>
+    <a class="btn-download" id="download" href="Aaryaman_Saha_Resume.pdf" target="_blank" rel="noopener">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2v8.5M4.5 7 8 10.5 11.5 7M2.5 13.5h11"/></svg>
+      Download
+    </a>
+  </div>
+  <p class="status" id="status" role="status" aria-live="polite"></p>
+  <div class="sheet">
+    <img src="resume-page-1.png" width="1700" height="2200" alt="Resume of Aaryaman Saha, M.S. Construction Management candidate at NYU Tandon">
+  </div>
+</section>
+
+<script>
+  const video = document.querySelector('.bg');
+  video.muted = true;
+  const p = video.play();
+  if (p && p.catch) p.catch(() => {});
+
+  const view = document.getElementById('resume-view');
+  const statusEl = document.getElementById('status');
+
+  function showResume(on) {
+    view.hidden = !on;
+    statusEl.textContent = '';
+    if (on) { view.scrollTop = 0; video.pause(); }
+    else { const q = video.play(); if (q && q.catch) q.catch(() => {}); }
+  }
+  document.getElementById('open-resume').addEventListener('click', (e) => {
+    e.preventDefault(); showResume(true);
+    try { history.replaceState(null, '', '#resume'); } catch (_) {}
+  });
+  document.getElementById('close-resume').addEventListener('click', (e) => {
+    e.preventDefault(); showResume(false);
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (!view.hidden) showResume(false);
+      if (aboutPanel && aboutPanel.classList.contains('open')) closeAbout();
+      if (aboutmePanel && aboutmePanel.classList.contains('open')) closeAboutMe();
+    }
+  });
+  if (location.hash === '#resume') showResume(true);
+
+  // ---------- About me ----------
+  const aboutmePanel = document.getElementById('aboutme-panel');
+
+  const amCloseBtn = document.getElementById('close-aboutme');
+
+  function openAboutMe() {
+    aboutmePanel.classList.add('open');
+    aboutmePanel.scrollTop = 0;
+    video.pause();
+    setTimeout(() => { amCloseBtn.classList.add('visible'); setupAboutMeObserver(); }, 100);
+    try { history.replaceState(null, '', '#about-me'); } catch (_) {}
+  }
+
+  function closeAboutMe() {
+    aboutmePanel.classList.remove('open');
+    amCloseBtn.classList.remove('visible');
+    const q = video.play(); if (q && q.catch) q.catch(() => {});
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
+  }
+
+  document.querySelector('a[href="#about-me"]').addEventListener('click', (e) => {
+    e.preventDefault(); openAboutMe();
+  });
+  document.getElementById('close-aboutme').addEventListener('click', (e) => {
+    e.preventDefault(); closeAboutMe();
+  });
+
+  // Scroll-triggered reveal for skills, projects and academic items
+  let amObserver = null;
+  function setupAboutMeObserver() {
+    if (amObserver) return;
+    const items = [
+      ...document.querySelectorAll('#skills-list li'),
+      ...document.querySelectorAll('#project-grid .am-project'),
+      ...document.querySelectorAll('.ac-item')
+    ];
+    document.querySelectorAll('#skills-list li').forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.07) + 's';
+    });
+    document.querySelectorAll('#project-grid .am-project').forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.1) + 's';
+    });
+    document.querySelectorAll('.ac-item').forEach((el, i) => {
+      el.style.transitionDelay = (i * 0.1) + 's';
+    });
+    amObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); amObserver.unobserve(e.target); } });
+    }, { root: aboutmePanel, threshold: 0.12 });
+    items.forEach(el => amObserver.observe(el));
+  }
+
+  // ---------- Academic project dropdowns ----------
+  function animateInfographic(bodyEl) {
+    // Gantt bars
+    bodyEl.querySelectorAll('.ac-bar').forEach(bar => {
+      const w = parseFloat(bar.dataset.w);
+      const delay = parseFloat(bar.dataset.delay || 0);
+      bar.setAttribute('width', 0);
+      setTimeout(() => {
+        bar.style.transition = 'width 0.55s cubic-bezier(0.25,0.46,0.45,0.94)';
+        bar.setAttribute('width', w);
+      }, delay + 50);
+    });
+    // Cost columns (grow upward)
+    bodyEl.querySelectorAll('.ac-col').forEach(col => {
+      const h = parseFloat(col.dataset.h);
+      const delay = parseFloat(col.dataset.delay || 0);
+      col.setAttribute('height', 0);
+      col.setAttribute('y', 150);
+      setTimeout(() => {
+        col.style.transition = 'height 0.5s cubic-bezier(0.25,0.46,0.45,0.94), y 0.5s cubic-bezier(0.25,0.46,0.45,0.94)';
+        col.setAttribute('height', h);
+        col.setAttribute('y', 150 - h);
+      }, delay + 50);
+    });
+    // Bell curve draw
+    const bell = bodyEl.querySelector('#ac-bell');
+    if (bell) {
+      bell.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(0.25,0.46,0.45,0.94) 0.2s';
+      bell.style.strokeDashoffset = '0';
+    }
+    // Risk dots
+    bodyEl.querySelectorAll('.ac-rdot').forEach(dot => {
+      const delay = parseFloat(dot.dataset.delay || 0);
+      setTimeout(() => {
+        dot.style.transition = 'r 0.35s ease';
+        dot.setAttribute('r', 6);
+      }, delay);
+    });
+    // Critical path dashes
+    bodyEl.querySelectorAll('.ac-crit').forEach((el, i) => {
+      setTimeout(() => {
+        el.style.transition = 'opacity 0.4s ease';
+        el.setAttribute('opacity', 1);
+      }, 600 + i * 150);
+    });
+  }
+
+  document.querySelectorAll('.ac-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      // close all others
+      document.querySelectorAll('.ac-toggle').forEach(b => {
+        b.setAttribute('aria-expanded', 'false');
+        document.getElementById(b.getAttribute('aria-controls')).classList.remove('open');
+      });
+      if (!expanded) {
+        btn.setAttribute('aria-expanded', 'true');
+        const body = document.getElementById(btn.getAttribute('aria-controls'));
+        body.classList.add('open');
+        // run animation after grid-template-rows starts expanding
+        setTimeout(() => animateInfographic(body), 80);
+      }
+    });
+  });
+
+  // ---------- Music artists orbit ----------
+  (function() {
+    const stage = document.getElementById('music-stage');
+    if (!stage) return;
+
+    // 3 rings — radii spread wide so 5 labels per ring never touch
+    // Each label is ~90–140px wide at 0.7rem; circumference must exceed 5×150px
+    // ring r=0.28 → C≈1130px at 640px stage ✓  r=0.38 → C≈1530px ✓  r=0.47 → C≈1890px ✓
+    const RINGS = [
+      {
+        artists: ['Kendrick Lamar','Kanye West','Frank Ocean','Michael Jackson','Pink Floyd'],
+        rPct: 0.28, speed: 0.00045, dir: 1,
+        sizes: [0.82, 0.82, 0.76, 0.80, 0.76],
+        weights: [800, 800, 700, 700, 700]
+      },
+      {
+        artists: ['J Cole','Jay-Z','Sade','Daft Punk','Mac Miller'],
+        rPct: 0.38, speed: 0.00035, dir: -1,
+        sizes: [0.76, 0.78, 0.72, 0.76, 0.72],
+        weights: [700, 700, 500, 700, 600]
+      },
+      {
+        artists: ['Fred Again',"Barry Can't Swim",'The Notorious B.I.G','Ben Böhmer','John Mayer'],
+        rPct: 0.47, speed: 0.00025, dir: 1,
+        sizes: [0.70, 0.66, 0.64, 0.68, 0.70],
+        weights: [600, 600, 600, 600, 600]
+      },
+    ];
+
+    // wait for layout so offsetWidth is real
+    function init() {
+      const stageSize = stage.offsetWidth || 640;
+      const cx = stageSize / 2;
+      const cy = stageSize / 2;
+      const items = [];
+
+      RINGS.forEach(ring => {
+        const count = ring.artists.length;
+        const step = (Math.PI * 2) / count;
+        const r = stageSize * ring.rPct;
+        ring.artists.forEach((name, i) => {
+          const el = document.createElement('span');
+          el.className = 'artist-name';
+          el.textContent = name;
+          el.style.fontSize = ring.sizes[i] + 'rem';
+          el.style.fontWeight = ring.weights[i];
+          stage.appendChild(el);
+          const offset = ring.rPct * 1.8; // stagger rings angularly
+          items.push({ el, r, angle: step * i + offset, speed: ring.speed * ring.dir });
+        });
+      });
+
+      // cache dimensions once so reads never happen inside the animation loop
+      requestAnimationFrame(() => {
+        items.forEach(item => {
+          item.w = item.el.offsetWidth  || 100;
+          item.h = item.el.offsetHeight || 14;
+        });
+        function positionAll() {
+          items.forEach(item => {
+            item.angle += item.speed;
+            const x = cx + item.r * Math.cos(item.angle);
+            const y = cy + item.r * Math.sin(item.angle);
+            item.el.style.transform = `translate(${x - item.w / 2}px, ${y - item.h / 2}px)`;
+          });
+          requestAnimationFrame(positionAll);
+        }
+        positionAll();
+      });
+    }
+    requestAnimationFrame(init);
+  })();
+
+  // ---------- References toggle ----------
+  function toggleRef(btn) {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('.ref-toggle').forEach(b => {
+      b.setAttribute('aria-expanded', 'false');
+      b.closest('.ref-item').querySelector('.ref-body').classList.remove('open');
+    });
+    if (!expanded) {
+      btn.setAttribute('aria-expanded', 'true');
+      btn.closest('.ref-item').querySelector('.ref-body').classList.add('open');
+    }
+  }
+  window.toggleRef = toggleRef;
+
+  // Reveal ref items on scroll
+  const refItems = document.querySelectorAll('.ref-item');
+  if (refItems.length && typeof IntersectionObserver !== 'undefined') {
+    const refObs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); refObs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    refItems.forEach(el => refObs.observe(el));
+  } else {
+    refItems.forEach(el => el.classList.add('revealed'));
+  }
+
+  // ---------- About another me — journey map ----------
+  const aboutPanel = document.getElementById('about-panel');
+
+  // Journey animation state
+  let journeyRaf = null, journeyStartTime = null, journeyRunning = false;
+
+  // Segments: [pathId, durationMs, isLong]
+  const SEGMENTS = [
+    { id: 'seg-0', ms: 1000, long: false },  // Siliguri → Manipal
+    { id: 'seg-1', ms: 600,  long: false },  // Manipal → Bangalore
+    { id: 'seg-2', ms: 2800, long: true  },  // Bangalore → Brooklyn (trans-continental)
+    { id: 'seg-3', ms: 900,  long: false },  // Brooklyn → Fort Lauderdale
+  ];
+  // Which dot/label to reveal at the START of each segment (origin city)
+  // plus index 4 = destination of last segment
+  const STOPS = ['dot-0','dot-1','dot-2','dot-3','dot-4'];
+  const LBLS  = ['lbl-0','lbl-1','lbl-2','lbl-3','lbl-4'];
+
+  function easeInOut(t) {
+    return t < 0.5 ? 2*t*t : -1+(4-2*t)*t;
+  }
+
+  function getPathPoint(pathEl, t) {
+    const len = pathEl.getTotalLength();
+    return pathEl.getPointAtLength(easeInOut(t) * len);
+  }
+
+  function showStop(i) {
+    const d = document.getElementById(STOPS[i]);
+    const l = document.getElementById(LBLS[i]);
+    if (d) d.classList.add('visible');
+    if (l) l.classList.add('visible');
+    // Draw a static trail for completed segment
+    if (i > 0) {
+      const seg = document.getElementById('seg-' + (i-1));
+      if (seg) {
+        const trail = document.createElementNS('http://www.w3.org/2000/svg','path');
+        trail.setAttribute('d', seg.getAttribute('d'));
+        trail.setAttribute('class', 'arc arc-trail' + (SEGMENTS[i-1].long ? ' arc-long' : ''));
+        trail.setAttribute('stroke-dasharray','none');
+        document.getElementById('trail-group').appendChild(trail);
+      }
+    }
+  }
+
+  // Travel pins data (same order as SVG ids)
+  const TRAVEL_PINS = [
+    'tp-india','tp-nepal','tp-bhutan','tp-kaz','tp-kenya',
+    'tp-norway','tp-turkey','tp-nz','tp-finland','tp-usa','tp-singapore'
+  ];
+
+  function startTravelPhase() {
+    // Fade out career layer and lived-in label
+    const careerLayer = document.getElementById('career-layer');
+    if (careerLayer) careerLayer.classList.add('hidden');
+    const lbl0 = document.getElementById('career-phase-label');
+    if (lbl0) lbl0.setAttribute('opacity','0');
+
+    // After fade, show label + drop pins one by one
+    setTimeout(() => {
+      const lbl = document.getElementById('travel-phase-label');
+      if (lbl) lbl.classList.add('visible');
+
+      TRAVEL_PINS.forEach((id, i) => {
+        setTimeout(() => {
+          const pin = document.getElementById(id);
+          if (pin) pin.classList.add('visible');
+        }, 300 + i * 180);
+      });
+    }, 800);
+  }
+
+  function resetTravelPhase() {
+    const careerLayer = document.getElementById('career-layer');
+    if (careerLayer) careerLayer.classList.remove('hidden');
+    const lbl0 = document.getElementById('career-phase-label');
+    if (lbl0) lbl0.setAttribute('opacity','0');
+    const lbl = document.getElementById('travel-phase-label');
+    if (lbl) lbl.classList.remove('visible');
+    TRAVEL_PINS.forEach(id => {
+      const pin = document.getElementById(id);
+      if (pin) pin.classList.remove('visible');
+    });
+  }
+
+  function resetJourney() {
+    journeyRunning = false;
+    if (journeyRaf) { cancelAnimationFrame(journeyRaf); journeyRaf = null; }
+    journeyStartTime = null;
+    // Hide all dots/labels
+    STOPS.forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('visible'); });
+    LBLS.forEach(id => { const el = document.getElementById(id); if(el) el.classList.remove('visible'); });
+    // Clear trails
+    const tg = document.getElementById('trail-group');
+    if (tg) tg.innerHTML = '';
+    // Hide travelling dot
+    const glow = document.getElementById('travel-glow');
+    const core = document.getElementById('travel-core');
+    if (glow) glow.setAttribute('opacity','0');
+    if (core) core.setAttribute('opacity','0');
+    // Hide pulse
+    const pr = document.getElementById('pulse-ring');
+    if (pr) pr.classList.remove('active');
+    // Reset travel pins
+    resetTravelPhase();
+  }
+
+  function runJourney() {
+    resetJourney();
+    journeyRunning = true;
+
+    const pathEls = SEGMENTS.map(s => document.getElementById(s.id));
+    const glow = document.getElementById('travel-glow');
+    const core = document.getElementById('travel-core');
+    const pulseRing = document.getElementById('pulse-ring');
+
+    // Build cumulative time table
+    const totalMs = SEGMENTS.reduce((a,s) => a + s.ms, 0);
+    let cumulative = [0];
+    SEGMENTS.forEach(s => cumulative.push(cumulative[cumulative.length-1] + s.ms));
+
+    // Reveal first stop immediately
+    showStop(0);
+    // Show "lived in" label
+    setTimeout(() => { const l = document.getElementById('career-phase-label'); if(l) l.setAttribute('opacity','1'); }, 300);
+
+    // Small delay before travelling starts
+    const startDelay = 400;
+
+    function tick(now) {
+      if (!journeyRunning) return;
+      if (!journeyStartTime) journeyStartTime = now;
+      const elapsed = now - journeyStartTime - startDelay;
+
+      if (elapsed < 0) { journeyRaf = requestAnimationFrame(tick); return; }
+
+      if (elapsed >= totalMs) {
+        // Journey complete — snap to final position
+        const lastPath = pathEls[pathEls.length - 1];
+        const pt = lastPath.getPointAtLength(lastPath.getTotalLength());
+        glow.setAttribute('cx', pt.x); glow.setAttribute('cy', pt.y);
+        core.setAttribute('cx', pt.x); core.setAttribute('cy', pt.y);
+        glow.setAttribute('opacity','0');
+        core.setAttribute('opacity','0');
+        showStop(STOPS.length - 1);
+        if (pulseRing) pulseRing.classList.add('active');
+        journeyRunning = false;
+        // After a pause, start travel pins phase
+        setTimeout(startTravelPhase, 2200);
+        return;
+      }
+
+      // Figure out which segment we're in
+      let segIdx = 0;
+      for (let i = 0; i < SEGMENTS.length; i++) {
+        if (elapsed >= cumulative[i] && elapsed < cumulative[i+1]) { segIdx = i; break; }
+      }
+      const segProgress = (elapsed - cumulative[segIdx]) / SEGMENTS[segIdx].ms;
+      const pt = getPathPoint(pathEls[segIdx], Math.min(segProgress, 1));
+
+      // Move travelling dot
+      glow.setAttribute('cx', pt.x); glow.setAttribute('cy', pt.y);
+      core.setAttribute('cx', pt.x); core.setAttribute('cy', pt.y);
+      glow.setAttribute('opacity', SEGMENTS[segIdx].long ? '0.35' : '0.25');
+      core.setAttribute('opacity', '1');
+
+      // Reveal next stop when segment completes
+      if (segProgress >= 0.98 && segIdx + 1 < STOPS.length) {
+        showStop(segIdx + 1);
+      }
+
+      journeyRaf = requestAnimationFrame(tick);
+    }
+
+    journeyRaf = requestAnimationFrame(tick);
+  }
+
+  document.querySelector('a[href="#about-another-me"]').addEventListener('click', (e) => {
+    e.preventDefault();
+    aboutPanel.classList.add('open');
+    // Small delay to let panel slide in before animating
+    setTimeout(runJourney, 500);
+    try { history.replaceState(null, '', '#about-another-me'); } catch (_) {}
+  });
+
+  function closeAbout() {
+    aboutPanel.classList.remove('open');
+    resetJourney();
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
+  }
+  document.getElementById('close-about').addEventListener('click', (e) => {
+    e.preventDefault(); closeAbout();
+  });
+  document.getElementById('close-about-2').addEventListener('click', (e) => {
+    e.preventDefault();
+    // Scroll back to map screen, then close
+    aboutPanel.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(closeAbout, 600);
+  });
+  document.getElementById('close-about-3').addEventListener('click', (e) => {
+    e.preventDefault();
+    aboutPanel.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(closeAbout, 600);
+  });
+  document.getElementById('close-about-4').addEventListener('click', (e) => {
+    e.preventDefault();
+    aboutPanel.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(closeAbout, 600);
+  });
+  document.getElementById('close-about-5').addEventListener('click', (e) => {
+    e.preventDefault();
+    closeAbout();
+  });
+
+  // Download: use the viewer's save prompt where available; otherwise the link opens the PDF.
+  let downloads = null;
+  if (window.claude && window.claude.use) {
+    window.claude.use('downloads').then((d) => { downloads = d; }).catch(() => {});
+  }
+  const btn = document.getElementById('download');
+  btn.addEventListener('click', async (e) => {
+    if (!downloads) return; // fall back to opening the PDF
+    e.preventDefault();
+    if (btn.getAttribute('aria-busy') === 'true') return;
+    btn.setAttribute('aria-busy', 'true');
+    statusEl.textContent = '';
+    try {
+      const res = await fetch('Aaryaman_Saha_Resume.pdf');
+      if (!res.ok) throw { code: 'fetch' };
+      const blob = await res.blob();
+      await downloads.save({ filename: 'Aaryaman_Saha_Resume.pdf', data: blob });
+      statusEl.textContent = 'Resume saved.';
+    } catch (err) {
+      const code = err && err.code;
+      if (code === 'declined') statusEl.textContent = '';
+      else if (code === 'rate_limited') statusEl.textContent = 'A save prompt is already open.';
+      else { statusEl.textContent = 'Opening the PDF instead.'; window.location.href = 'Aaryaman_Saha_Resume.pdf'; }
+    } finally {
+      btn.removeAttribute('aria-busy');
+    }
+  });
+</script>
