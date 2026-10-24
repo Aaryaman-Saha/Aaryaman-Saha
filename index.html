@@ -895,7 +895,9 @@
   .email-link:hover { color: var(--ink); border-bottom-color: var(--ink); }
 
   @media (max-width: 480px) {
-    .text-link { font-size: 0.8rem; }
+    .text-link { font-size: 1rem; }
+    .linkedin { width: 40px; height: 40px; font-size: 24px; }
+    .email-link { font-size: 1rem; }
     .btn-download { padding: 10px 14px; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -1236,6 +1238,7 @@
 <a class="am-close" href="#" id="close-aboutme">← Back</a>
 
 <!-- About another me panel -->
+<a class="am-close" href="#" id="close-about-personal" style="display:none;">← Back</a>
 <section class="about-panel" id="about-panel" aria-label="About me, but a little personal">
   <!-- Screen 1: map -->
   <div class="about-map-screen">
@@ -1364,7 +1367,7 @@
       </g>
     </svg>
   </div>
-  <div class="map-scroll-hint" aria-hidden="true">
+  <div class="map-scroll-hint" aria-hidden="true" style="pointer-events:none;">
     <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
     <svg viewBox="0 0 24 24" style="opacity:0.5"><polyline points="6 9 12 15 18 9"/></svg>
   </div>
@@ -1651,7 +1654,6 @@
       </div>
       <!-- Artist names injected by JS -->
     </div>
-    <a class="about-tiles-close" href="#" id="close-about-5">← Back to home</a>
   </div><!-- /about-music-screen -->
 
 </section>
@@ -2093,15 +2095,19 @@
     journeyRaf = requestAnimationFrame(tick);
   }
 
+  const aboutPersonalCloseBtn = document.getElementById('close-about-personal');
   document.querySelector('a[href="#about-another-me"]').addEventListener('click', (e) => {
     e.preventDefault();
     aboutPanel.classList.add('open');
     // Small delay to let panel slide in before animating
     setTimeout(runJourney, 500);
+    aboutPersonalCloseBtn.style.display = '';
+    setTimeout(() => { aboutPersonalCloseBtn.classList.add('visible'); }, 100);
     try { history.replaceState(null, '', '#about-another-me'); } catch (_) {}
   });
 
   function closeAbout() {
+    if (aboutPersonalCloseBtn) { aboutPersonalCloseBtn.classList.remove('visible'); setTimeout(() => { aboutPersonalCloseBtn.style.display = 'none'; }, 500); }
     aboutPanel.classList.remove('open');
     resetJourney();
     try { history.replaceState(null, '', location.pathname + location.search); } catch (_) {}
@@ -2125,7 +2131,7 @@
     aboutPanel.scrollTo({ top: 0, behavior: 'smooth' });
     setTimeout(closeAbout, 600);
   });
-  document.getElementById('close-about-5').addEventListener('click', (e) => {
+  aboutPersonalCloseBtn.addEventListener('click', (e) => {
     e.preventDefault();
     closeAbout();
   });
